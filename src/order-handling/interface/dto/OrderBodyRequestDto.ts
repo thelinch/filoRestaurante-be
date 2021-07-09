@@ -1,4 +1,9 @@
-import { IsNotEmpty, IsUUID, ValidateNested } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsPositive,
+  IsUUID,
+  ValidateNested,
+} from 'class-validator';
 import { OrderDetailBodyRequestDto } from './OrderDetailBodyRequestDto';
 import { TableBodyRequestDto } from './tableBodyRequestDto';
 
@@ -14,6 +19,7 @@ export class OrderBodyRequestDto {
   @IsNotEmpty({ message: 'Debe contener la mesa' })
   @ValidateNested()
   readonly table: TableBodyRequestDto;
+
   @IsNotEmpty({ message: 'Debe contener al menos un producto' })
   @ValidateNested()
   readonly orderDetails: OrderDetailBodyRequestDto[];

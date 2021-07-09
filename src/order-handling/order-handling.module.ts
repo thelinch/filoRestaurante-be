@@ -3,6 +3,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { OrderAttendedHandler } from './application/events/OrderAttendedHandler';
 import { OrderCreatedHandler } from './application/events/OrderCreatedHandler';
+import { OrderPaymentHandler } from './application/events/OrderPaymentHandler';
 import { OrderService } from './application/OrderService';
 import { TableService } from './application/TableService';
 import { CategoryController } from './infraestructure/controllers/Category.controller';
@@ -14,10 +15,15 @@ import { ProductEntity } from './infraestructure/entity/ProductEntity';
 import { TableEntity } from './infraestructure/entity/TableEntity';
 import { CategoryRepository } from './infraestructure/repository/CategoryRepository';
 import { OrderRepository } from './infraestructure/repository/OrderRepository';
+import { TableRepository } from './infraestructure/repository/TableRepository';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([CategoryRepository, OrderRepository]),
+    TypeOrmModule.forFeature([
+      CategoryRepository,
+      OrderRepository,
+      TableRepository,
+    ]),
     CqrsModule,
   ],
   controllers: [CategoryController, OrderController],
@@ -26,6 +32,7 @@ import { OrderRepository } from './infraestructure/repository/OrderRepository';
     OrderService,
     OrderAttendedHandler,
     OrderCreatedHandler,
+    OrderPaymentHandler,
   ],
   exports: [TypeOrmModule],
 })

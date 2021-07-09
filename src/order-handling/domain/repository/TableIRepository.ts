@@ -2,8 +2,10 @@ import { Order } from '../Order';
 import { TableOrder } from '../Table';
 
 export interface TableIRepository {
-  save: (table: TableOrder) => Promise<void>;
-  remove: (table: TableOrder) => Promise<void>;
-  update: (table: TableOrder) => Promise<void>;
+  created: (table: TableOrder) => Promise<void>;
+  removed: (tableId: string) => Promise<void>;
+  list: () => Promise<TableOrder[]>;
+  updated: (table: Omit<TableOrder, 'State'>) => Promise<void>;
+  updatedState: (table: Pick<TableOrder, 'State' | 'Id'>) => Promise<void>;
   listOrderOfTable: (tableId: string) => Promise<Order[]>;
 }

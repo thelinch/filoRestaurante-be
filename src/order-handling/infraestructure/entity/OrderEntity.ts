@@ -10,6 +10,7 @@ import { TableEntity } from './TableEntity';
 export enum OrderState {
   CREADO = 'creado',
   RECHAZADO = 'rechazado',
+  ELIMINADO = 'eliminado',
   ATENDIDO = 'atendido',
   ENREALIZACION = 'en realizacion',
 }
@@ -25,6 +26,9 @@ export class OrderEntity {
   total: number;
   @Column({ type: 'enum', enum: OrderState, default: OrderState.CREADO })
   state: string;
+
+  @Column({ type: 'date' })
+  fechaCreacion: Date;
   @ManyToOne(() => TableEntity)
   table: TableEntity;
   @OneToMany(() => OrderDetailEntity, (orderDetail) => orderDetail.order, {

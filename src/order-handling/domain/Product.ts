@@ -15,7 +15,7 @@ export class Product extends AggregateRoot {
   private quantity: number;
   private price: number;
   private categories: Category[];
-  constructor(props: ProductProperties) {
+  constructor(props: Partial<ProductProperties>) {
     super();
     Object.assign(this, props);
   }

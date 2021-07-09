@@ -4,7 +4,9 @@ import { OrderDetail } from '../OrderDetail';
 export interface OrderIRepository {
   created: (Order: Order) => Promise<void>;
   listOrderDetailOfOrder: (orderId: number) => Promise<OrderDetail[]>;
-  updateOrder: (Order: Order) => Promise<void>;
-  findById: (orderId: number) => Promise<Order>;
-  removed: (orderId: number) => Promise<void>;
+  updateOrder: (Order: Omit<Order, 'state'>) => Promise<void>;
+  findById: (orderId: string) => Promise<Order | undefined>;
+  removed: (orderId: string) => Promise<void>;
+  updateState: (order: Pick<Order, 'Id' | 'State'>) => Promise<void>;
+  listOrderOfTable: (tableId: string) => Promise<Order[]>;
 }

@@ -1,4 +1,10 @@
+import {
+  UnprocessableEntityException,
+  UnauthorizedException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { AggregateRoot } from '@nestjs/cqrs';
+import { OrderState } from '../infraestructure/entity/OrderEntity';
 import { OrderBodyRequestDto } from '../interface/dto/OrderBodyRequestDto';
 import { OrderAttendedEvent } from './events/OrderAttended.event';
 import { OrderCreatedEvent } from './events/OrderCreated.event';
@@ -19,15 +25,30 @@ export interface OrderProperties {
   state: string;
 }
 export class Order extends AggregateRoot {
-  private readonly id: string;
+  private id: string;
   private resume: string;
   private observation: string;
   private total: number;
   private table: TableOrder;
   private state: string;
   private orderDetails: OrderDetail[];
-  constructor() {
+  constructor(
+    id: string,
+    resume: string,
+    observation: string,
+    total: number,
+    table: TableOrder,
+    state: string,
+    orderDetails: OrderDetail[] = [],
+  ) {
     super();
+    this.id = id;
+    this.resume = resume;
+    this.observation = observation;
+    this.total = total;
+    this.state = state;
+    this.orderDetails = orderDetails;
+    this.table = table;
   }
 
   properties() {
@@ -50,12 +71,18 @@ export class Order extends AggregateRoot {
     };
   }
 
+  get Id() {
+    return this.id;
+  }
+  get State() {
+    return this.state;
+  }
   payment() {
     this.apply(Object.assign(new OrderPaymentEvent(), this));
   }
 
   static create(props: OrderBodyRequestDto): Order {
-    const orderNew = this.dtoToModel(props);
+    const orderNew = this.dtoToDomain(props);
     Object.assign(orderNew, props);
     return orderNew;
   }
@@ -64,22 +91,26 @@ export class Order extends AggregateRoot {
   }
 
   reject() {
-    this.apply(Object.assign(new OrderRejectEvent(), this));
+    if (this.state == OrderState.CREADO) {
+      this.state = OrderState.RECHAZADO;
+      this.apply(Object.assign(new OrderRejectEvent(), this));
+      return;
+    }
+    throw new UnprocessableEntityException('No se puede eliminar la orden');
   }
   attended() {
     this.apply(Object.assign(new OrderAttendedEvent(), this));
   }
   remove() {
-    this.apply(Object.assign(new OrderRemovedEvent(), this));
+    if (this.state == OrderState.CREADO) {
+      this.state = OrderState.ELIMINADO;
+      this.apply(Object.assign(new OrderRemovedEvent(), this));
+      return;
+    }
+    throw new UnprocessableEntityException('No se puede eliminar la orden');
   }
-  static dtoToModel(orderDto: OrderBodyRequestDto): Order {
-    const order = new Order();
-    order.table = new TableOrder({
-      name: orderDto.table.name,
-      orders: [],
-      id: orderDto.table.id,
-    });
-    order.orderDetails = orderDto.orderDetails.map(
+  static dtoToDomain(orderDto: OrderBodyRequestDto): Order {
+    const orderDetails: OrderDetail[] = orderDto.orderDetails.map(
       (o) =>
         new OrderDetail({
           id: o.id,
@@ -87,11 +118,25 @@ export class Order extends AggregateRoot {
             id: o.product.id,
             categories: [],
             name: o.product.name,
-            price: o.product.price,
-            quantity: o.product.quantity,
           }),
+          orderedQuantity: o.orderedQuantity,
         }),
     );
+    const tableOrder = new TableOrder({
+      name: orderDto.table.name,
+      orders: [],
+      id: orderDto.table.id,
+    });
+    const order = new Order(
+      orderDto.id,
+      orderDto.resume,
+      orderDto.observation,
+      orderDto.total,
+      tableOrder,
+      '',
+      orderDetails,
+    );
+
     Object.assign(order, orderDto);
     return order;
   }
