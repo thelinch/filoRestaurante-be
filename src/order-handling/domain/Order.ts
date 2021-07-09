@@ -34,9 +34,9 @@ export class Order extends AggregateRoot {
       resume: this.resume,
       observation: this.observation,
       total: this.total,
-      table: { id: this.table.Id, name: this.table.Name },
+      table: { id: this.table?.Id, name: this.table?.Name },
       state: this.state,
-      orderDetails: this.orderDetails.map((o) => ({
+      orderDetails: this.orderDetails?.map((o) => ({
         id: o.Id,
         product: {
           id: o.Product.Id,
@@ -55,8 +55,10 @@ export class Order extends AggregateRoot {
   static create(props: OrderProperties): Order {
     const orderNew = new Order();
     Object.assign(orderNew, props);
-    this.apply(Object.assign(new OrderCreatedEvent(), this));
     return orderNew;
+  }
+  createdEvent() {
+    this.apply(Object.assign(new OrderCreatedEvent(), this.properties()));
   }
   reject() {
     this.apply(Object.assign(new OrderRejectEvent(), this));
