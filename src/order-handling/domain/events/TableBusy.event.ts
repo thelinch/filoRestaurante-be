@@ -6,4 +6,5 @@ export class TableBusyEvent implements IEvent, TableProperties {
   id: string;
   name: string;
   orders: Order[];
+  state: string;
 }

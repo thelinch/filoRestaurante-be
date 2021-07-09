@@ -8,6 +8,8 @@ import { OrderService } from './application/OrderService';
 import { TableService } from './application/TableService';
 import { CategoryController } from './infraestructure/controllers/Category.controller';
 import { OrderController } from './infraestructure/controllers/Order.controller';
+import { ProductController } from './infraestructure/controllers/Product.controller';
+import { TableOrderController } from './infraestructure/controllers/TableOrder.controller';
 import { CategoryEntity } from './infraestructure/entity/CategoryEntity';
 import { OrderDetailEntity } from './infraestructure/entity/OrderDetailEntity';
 import { OrderEntity } from './infraestructure/entity/OrderEntity';
@@ -26,7 +28,12 @@ import { TableRepository } from './infraestructure/repository/TableRepository';
     ]),
     CqrsModule,
   ],
-  controllers: [CategoryController, OrderController],
+  controllers: [
+    CategoryController,
+    OrderController,
+    ProductController,
+    TableOrderController,
+  ],
   providers: [
     TableService,
     OrderService,

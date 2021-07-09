@@ -6,4 +6,5 @@ export class TableDesocupiedEvent implements IEvent, TableProperties {
   id: string;
   name: string;
   orders: Order[];
+  state: string;
 }

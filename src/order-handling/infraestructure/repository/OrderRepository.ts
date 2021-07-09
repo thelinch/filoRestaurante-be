@@ -38,7 +38,15 @@ export class OrderRepository
       .where('order.fechaCreacion=:fechaCreacion', {
         fechaCreacion: new Date(),
       })
+      .andWhere('order.state in(...:statesOrder)', {
+        stateOrder: [
+          OrderState.ATENDIDO,
+          OrderState.CREADO,
+          OrderState.ENREALIZACION,
+        ],
+      })
       .andWhere('table.id=:tableId', { tableId: tableId })
+
       .getOne();
     return table.orders.map((o) => util.orderEntityToOrderDomain(o));
   }

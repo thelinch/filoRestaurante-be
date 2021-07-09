@@ -78,7 +78,7 @@ export class Order extends AggregateRoot {
     return this.state;
   }
   payment() {
-    this.apply(Object.assign(new OrderPaymentEvent(), this));
+    this.apply(Object.assign(new OrderPaymentEvent(), this.properties()));
   }
 
   static create(props: OrderBodyRequestDto): Order {
@@ -93,7 +93,7 @@ export class Order extends AggregateRoot {
   reject() {
     if (this.state == OrderState.CREADO) {
       this.state = OrderState.RECHAZADO;
-      this.apply(Object.assign(new OrderRejectEvent(), this));
+      this.apply(Object.assign(new OrderRejectEvent(), this.properties()));
       return;
     }
     throw new UnprocessableEntityException('No se puede eliminar la orden');
