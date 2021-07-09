@@ -14,7 +14,10 @@ export class TableService {
     await this.tableRepository.removed(tableId);
   }
   async list() {
-    await this.tableRepository.list();
+    return await this.tableRepository.list();
+  }
+  async update(table: TableOrder) {
+    return await this.tableRepository.updated(table);
   }
   async updateStateNotBusy(table: TableOrder) {
     table.vacate();

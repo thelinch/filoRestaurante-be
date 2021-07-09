@@ -7,5 +7,4 @@ export class TableBodyRequestDto {
   readonly id: string;
   @IsNotEmpty({ message: 'Debe contener un nombre' })
   readonly name: string;
-  readonly orders: OrderBodyRequestDto[];
 }
