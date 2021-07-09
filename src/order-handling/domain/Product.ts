@@ -20,6 +20,15 @@ export class Product extends AggregateRoot {
     Object.assign(this, props);
   }
 
+  properties(): ProductProperties {
+    return {
+      id: this.id,
+      name: this.name,
+      quantity: this.quantity,
+      price: this.price,
+      categories: this.categories,
+    };
+  }
   get Id(): string {
     return this.id;
   }

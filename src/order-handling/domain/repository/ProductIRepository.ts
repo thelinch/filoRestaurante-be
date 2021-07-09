@@ -1,9 +1,10 @@
+import { OrderDetail } from '../OrderDetail';
 import { Product } from '../Product';
 
 export interface ProductIRepository {
-  save: (product: Product) => Promise<void>;
-  remove: (product: Product) => Promise<void>;
-  update: (product: Product) => Promise<void>;
-  decreaseAmount: (products: Product[]) => Promise<void>;
-  increaseQuantity: (products: Product[]) => Promise<void>;
+  created: (product: Product) => Promise<void>;
+  removed: (productId: string) => Promise<void>;
+  updated: (product: Product) => Promise<void>;
+  decreaseAmount: (orderDetails: OrderDetail[]) => Promise<void>;
+  increaseQuantity: (orderDetails: OrderDetail[]) => Promise<void>;
 }

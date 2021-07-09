@@ -1,9 +1,12 @@
+import { Category } from 'src/order-handling/domain/Category';
 import { Order } from 'src/order-handling/domain/Order';
 import { OrderDetail } from 'src/order-handling/domain/OrderDetail';
 import { Product } from 'src/order-handling/domain/Product';
 import { TableOrder } from 'src/order-handling/domain/Table';
+import { CategoryEntity } from '../entity/CategoryEntity';
 import { OrderDetailEntity } from '../entity/OrderDetailEntity';
 import { OrderEntity } from '../entity/OrderEntity';
+import { ProductEntity } from '../entity/ProductEntity';
 import { TableEntity } from '../entity/TableEntity';
 
 const util = {
@@ -59,6 +62,28 @@ const util = {
     const tableEntityInstance = new TableEntity();
     Object.assign(tableEntityInstance, table.properties());
     return tableEntityInstance;
+  },
+  productDomainToEntity: function (product: Product): ProductEntity {
+    const productEntityInstance = new ProductEntity();
+    Object.assign(productEntityInstance, product.properties());
+    return productEntityInstance;
+  },
+  productEntityToDomain: function (product: ProductEntity): Product {
+    const categoriesDomain = product.categories.map((c) =>
+      util.categoryEntityToDomain(c),
+    );
+    const productDomainInstance = new Product({
+      ...product,
+      categories: categoriesDomain,
+    });
+    return productDomainInstance;
+  },
+  categoryEntityToDomain: function (entity: CategoryEntity): Category {
+    return new Category(entity);
+  },
+  categoryDomainToEntity: function (category: Category): CategoryEntity {
+    const properties = category.properties();
+    return { ...properties };
   },
 };
 export default util;

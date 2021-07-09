@@ -17,6 +17,7 @@ import { ProductEntity } from './infraestructure/entity/ProductEntity';
 import { TableEntity } from './infraestructure/entity/TableEntity';
 import { CategoryRepository } from './infraestructure/repository/CategoryRepository';
 import { OrderRepository } from './infraestructure/repository/OrderRepository';
+import { ProductRepository } from './infraestructure/repository/ProductRepository';
 import { TableRepository } from './infraestructure/repository/TableRepository';
 
 @Module({
@@ -25,6 +26,7 @@ import { TableRepository } from './infraestructure/repository/TableRepository';
       CategoryRepository,
       OrderRepository,
       TableRepository,
+      ProductRepository,
     ]),
     CqrsModule,
   ],
