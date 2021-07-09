@@ -6,7 +6,7 @@ export interface OrderDetailProperties {
 }
 
 export class OrderDetail {
-  private readonly id: string;
+  private  id: string;
   private product: Product;
   constructor(props: OrderDetailProperties) {
     Object.assign(this, props);

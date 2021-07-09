@@ -1,10 +1,12 @@
 import { AggregateRoot } from '@nestjs/cqrs';
+import { OrderBodyRequestDto } from '../interface/dto/OrderBodyRequestDto';
 import { OrderAttendedEvent } from './events/OrderAttended.event';
 import { OrderCreatedEvent } from './events/OrderCreated.event';
 import { OrderPaymentEvent } from './events/OrderPayment.event';
 import { OrderRejectEvent } from './events/OrderReject.event';
 import { OrderRemovedEvent } from './events/OrderRemove.event';
 import { OrderDetail } from './OrderDetail';
+import { Product } from './Product';
 
 import { TableOrder } from './Table';
 export interface OrderProperties {
@@ -52,14 +54,15 @@ export class Order extends AggregateRoot {
     this.apply(Object.assign(new OrderPaymentEvent(), this));
   }
 
-  static create(props: OrderProperties): Order {
-    const orderNew = new Order();
+  static create(props: OrderBodyRequestDto): Order {
+    const orderNew = this.dtoToModel(props);
     Object.assign(orderNew, props);
     return orderNew;
   }
   createdEvent() {
     this.apply(Object.assign(new OrderCreatedEvent(), this.properties()));
   }
+
   reject() {
     this.apply(Object.assign(new OrderRejectEvent(), this));
   }
@@ -68,5 +71,28 @@ export class Order extends AggregateRoot {
   }
   remove() {
     this.apply(Object.assign(new OrderRemovedEvent(), this));
+  }
+  static dtoToModel(orderDto: OrderBodyRequestDto): Order {
+    const order = new Order();
+    order.table = new TableOrder({
+      name: orderDto.table.name,
+      orders: [],
+      id: orderDto.table.id,
+    });
+    order.orderDetails = orderDto.orderDetails.map(
+      (o) =>
+        new OrderDetail({
+          id: o.id,
+          product: new Product({
+            id: o.product.id,
+            categories: [],
+            name: o.product.name,
+            price: o.product.price,
+            quantity: o.product.quantity,
+          }),
+        }),
+    );
+    Object.assign(order, orderDto);
+    return order;
   }
 }

@@ -13,11 +13,20 @@ import { OrderEntity } from './infraestructure/entity/OrderEntity';
 import { ProductEntity } from './infraestructure/entity/ProductEntity';
 import { TableEntity } from './infraestructure/entity/TableEntity';
 import { CategoryRepository } from './infraestructure/repository/CategoryRepository';
+import { OrderRepository } from './infraestructure/repository/OrderRepository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([CategoryRepository]), CqrsModule],
-  controllers: [CategoryController,OrderController],
-  providers: [TableService, OrderService, OrderAttendedHandler,OrderCreatedHandler],
+  imports: [
+    TypeOrmModule.forFeature([CategoryRepository, OrderRepository]),
+    CqrsModule,
+  ],
+  controllers: [CategoryController, OrderController],
+  providers: [
+    TableService,
+    OrderService,
+    OrderAttendedHandler,
+    OrderCreatedHandler,
+  ],
   exports: [TypeOrmModule],
 })
 export class OrderHandlingModule {}

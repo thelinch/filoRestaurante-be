@@ -7,7 +7,7 @@ export interface TableProperties {
 }
 
 export class TableOrder {
-  private readonly id: string;
+  private  id: string;
   private name: string;
   private orders: Order[];
   constructor(props: TableProperties) {
