@@ -10,12 +10,12 @@ export class CategoryController {
   constructor(private categoryRepository: CategoryRepository) {}
 
   @Post()
-  created(@Body() categoryBodyRequestDto: CategoryBodyRequestDto) {
+  async created(@Body() categoryBodyRequestDto: CategoryBodyRequestDto) {
     const c = new Category(categoryBodyRequestDto);
-    this.categoryRepository.created(c);
+    await this.categoryRepository.created(c);
   }
 
-  @Post('/:id/updated')
+  @Post('/:id/update')
   async updated(
     @Param('id') id: string,
     @Body() categoryBodyRequestDto: CategoryBodyRequestDto,
