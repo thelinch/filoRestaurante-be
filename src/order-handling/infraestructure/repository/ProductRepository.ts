@@ -1,8 +1,10 @@
 import { OrderDetail } from 'src/order-handling/domain/OrderDetail';
 import { Product } from 'src/order-handling/domain/Product';
 import { ProductIRepository } from 'src/order-handling/domain/repository/ProductIRepository';
-import { EntityRepository, Repository } from 'typeorm';
+import { Brackets, EntityRepository, Repository } from 'typeorm';
 import { ProductEntity, ProductState } from '../entity/ProductEntity';
+import * as moment from 'moment';
+
 import util from '../util/util';
 @EntityRepository(ProductEntity)
 export class ProductRepository
@@ -11,13 +13,32 @@ export class ProductRepository
 {
   async created(product: Product): Promise<void> {
     const productInstance: ProductEntity = util.productDomainToEntity(product);
-    await this.save(productInstance);
+    await this.save({ ...productInstance, createdDate: new Date() });
+  }
+  async list(): Promise<Product[]> {
+    const products: ProductEntity[] = await this.createQueryBuilder()
+      .select('product')
+      .from(ProductEntity, 'product')
+      .leftJoinAndSelect('product.categories', 'category')
+      .where('product.state=:state', { state: ProductState.ACTIVO })
+      .andWhere(
+        new Brackets((qb) => {
+          qb.where('product.createdDate=:created_at', {
+            created_at: moment().format('YYYY-MM-DD'),
+          }).orWhere('category.isVisible=:isVisible', { isVisible: true });
+        }),
+      )
+      .printSql()
+      .getMany();
+    const productsDomain = products.map((p) => util.productEntityToDomain(p));
+    return productsDomain;
   }
   async removed(productId: string): Promise<void> {
     await this.save({ id: productId, state: ProductState.DESACTIVADO });
   }
   async updated(product: Product): Promise<void> {
     const productInstance: ProductEntity = util.productDomainToEntity(product);
+    console.log('p', productInstance);
     await this.save(productInstance);
   }
   async decreaseAmount(orderDetails: OrderDetail[]): Promise<void> {

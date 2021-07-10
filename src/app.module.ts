@@ -19,7 +19,7 @@ import { TableEntity } from './order-handling/infraestructure/entity/TableEntity
       username: 'root',
       password: '',
       database: 'filo',
-      synchronize: false,
+      synchronize: true,
       entities: [
         CategoryEntity,
         OrderDetailEntity,

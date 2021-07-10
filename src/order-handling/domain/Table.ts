@@ -4,6 +4,7 @@ import { Order } from './Order';
 export interface TableProperties {
   id: string;
   name: string;
+ 
   orders: Order[];
   state: string;
 }
@@ -22,6 +23,7 @@ export class TableOrder {
       name: this.name,
       orders: this.orders,
       state: this.state,
+     
     };
   }
   occupy() {
@@ -43,4 +45,5 @@ export class TableOrder {
   get State() {
     return this.state;
   }
+
 }
