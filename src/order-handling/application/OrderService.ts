@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
+import { Category } from '../domain/Category';
 import { Order } from '../domain/Order';
 import { OrderRepository } from '../infraestructure/repository/OrderRepository';
 
@@ -9,12 +10,16 @@ export class OrderService {
     private publisher: EventPublisher,
     private orderRepository: OrderRepository,
   ) {}
-   async payment(orderId: string) {
+  async payment(orderId: string) {
     const order: Order = await this.orderRepository.findById(orderId);
     const orderContext = this.publisher.mergeObjectContext(order);
     orderContext.payment();
     await this.orderRepository.updateOrder(order);
     orderContext.commit();
+  }
+
+  async listForCategories(categories: Category[]) {
+    return await this.orderRepository.listForCategories(categories);
   }
   async attended(orderId: string) {
     const order: Order = await this.orderRepository.findById(orderId);

@@ -1,7 +1,9 @@
 import { Body, Get, Param, Post } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
 import { OrderService } from 'src/order-handling/application/OrderService';
+import { Category } from 'src/order-handling/domain/Category';
 import { Order } from 'src/order-handling/domain/Order';
+import { CategoryBodyRequestDto } from 'src/order-handling/interface/dto/CategoryBodyRequestDto';
 import { OrderBodyRequestDto } from 'src/order-handling/interface/dto/OrderBodyRequestDto';
 
 @Controller('orders')
@@ -20,6 +22,14 @@ export class OrderController {
   update(@Body() orderBodyRequestDto: OrderBodyRequestDto) {
     const order = Order.create(orderBodyRequestDto);
     this.OrderService.update(order);
+  }
+  @Post('/categories/orders')
+  async ordersForCategories(
+    @Body() categoriesBodyRequestDto: CategoryBodyRequestDto[],
+  ) {
+    return this.OrderService.listForCategories(
+      categoriesBodyRequestDto.map((c) => new Category(c)),
+    );
   }
   @Get('/mesas/:tableId/orders')
   async listOrderForTable(@Param('tableId') tableId: string) {

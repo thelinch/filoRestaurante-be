@@ -1,3 +1,4 @@
+import { Category } from 'src/order-handling/domain/Category';
 import { Order } from 'src/order-handling/domain/Order';
 import { OrderDetail } from 'src/order-handling/domain/OrderDetail';
 import { Product } from 'src/order-handling/domain/Product';
@@ -28,6 +29,21 @@ export class OrderRepository
       where: { id: orderId },
     });
     return order.orderDetails.map((o) => util.orderDetailEntityToModel(o));
+  }
+  async listForCategories(categories: Category[]): Promise<Order[]> {
+    const orders: OrderEntity[] = await this.createQueryBuilder()
+      .select('order')
+      .from(OrderEntity, 'order')
+      .leftJoinAndSelect("order.table","table")
+      .leftJoinAndSelect('order.orderDetails', 'orderDetail')
+      .leftJoinAndSelect('orderDetail.product', 'product')
+      .leftJoinAndSelect('product.categories', 'category')
+      .where('category.id IN(:...categoriesId)', {
+        categoriesId: categories.map((c) => c.Id),
+      })
+      .getMany();
+      console.log("q",orders)
+    return orders.map((o) => util.orderEntityToOrderDomain(o));
   }
 
   async listOrderOfTable(tableId: string): Promise<Order[]> {
