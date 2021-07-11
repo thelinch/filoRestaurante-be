@@ -5,6 +5,7 @@ import { TableOrder } from '../Table';
 
 export class OrderRemovedEvent implements IEvent, OrderProperties {
   readonly id: string;
+  readonly fechaCreacion: undefined | string;
   readonly resume: string;
   readonly observation: string;
   readonly total: number;

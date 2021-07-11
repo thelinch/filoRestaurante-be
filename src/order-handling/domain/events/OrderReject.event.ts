@@ -5,6 +5,7 @@ import { TableOrder } from '../Table';
 
 export class OrderRejectEvent implements IEvent, OrderProperties {
   orderDetails: OrderDetail[];
+  readonly fechaCreacion: undefined | string;
   readonly id: string;
   readonly resume: string;
   readonly observation: string;

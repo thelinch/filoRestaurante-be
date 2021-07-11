@@ -26,7 +26,6 @@ export class OrderEntity {
   total: number;
   @Column({ type: 'enum', enum: OrderState, default: OrderState.CREADO })
   state: string;
-
   @Column({ type: 'date' })
   fechaCreacion: Date;
   @ManyToOne(() => TableEntity)

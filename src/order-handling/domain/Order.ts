@@ -21,6 +21,7 @@ export interface OrderProperties {
   observation: string;
   total: number;
   table: TableOrder;
+  fechaCreacion: undefined | string;
   orderDetails: OrderDetail[];
   state: string;
 }
@@ -30,6 +31,7 @@ export class Order extends AggregateRoot {
   private observation: string;
   private total: number;
   private table: TableOrder;
+  private fechaCreacion: undefined | string;
   private state: string;
   private orderDetails: OrderDetail[];
   constructor(
@@ -40,6 +42,7 @@ export class Order extends AggregateRoot {
     table: TableOrder,
     state: string,
     orderDetails: OrderDetail[] = [],
+    fechaCreacion = undefined,
   ) {
     super();
     this.id = id;
@@ -49,6 +52,7 @@ export class Order extends AggregateRoot {
     this.state = state;
     this.orderDetails = orderDetails;
     this.table = table;
+    this.fechaCreacion = fechaCreacion;
   }
 
   properties() {

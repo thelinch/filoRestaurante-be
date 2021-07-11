@@ -6,6 +6,7 @@ import { TableOrder } from '../Table';
 export class OrderAttendedEvent implements IEvent, OrderProperties {
   orderDetails: OrderDetail[];
   readonly id: string;
+  readonly fechaCreacion: undefined | string;
   readonly resume: string;
   readonly observation: string;
   readonly total: number;

@@ -1,3 +1,4 @@
+import * as moment from 'moment';
 import { Category } from 'src/order-handling/domain/Category';
 import { Order } from 'src/order-handling/domain/Order';
 import { OrderDetail } from 'src/order-handling/domain/OrderDetail';
@@ -34,15 +35,18 @@ export class OrderRepository
     const orders: OrderEntity[] = await this.createQueryBuilder()
       .select('order')
       .from(OrderEntity, 'order')
-      .leftJoinAndSelect("order.table","table")
+      .leftJoinAndSelect('order.table', 'table')
       .leftJoinAndSelect('order.orderDetails', 'orderDetail')
       .leftJoinAndSelect('orderDetail.product', 'product')
       .leftJoinAndSelect('product.categories', 'category')
       .where('category.id IN(:...categoriesId)', {
         categoriesId: categories.map((c) => c.Id),
       })
+      .andWhere('order.fechaCreacion=:fechaCreacion', {
+        fechaCreacion: moment().format('YYYY-MM-DD'),
+      })
       .getMany();
-      console.log("q",orders)
+    console.log('q', orders);
     return orders.map((o) => util.orderEntityToOrderDomain(o));
   }
 

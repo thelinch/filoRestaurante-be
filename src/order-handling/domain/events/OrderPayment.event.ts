@@ -5,6 +5,7 @@ import { TableOrder } from '../Table';
 
 export class OrderPaymentEvent implements IEvent, Readonly<OrderProperties> {
   orderDetails: OrderDetail[];
+  readonly fechaCreacion: undefined | string;
   readonly id: string;
   readonly resume: string;
   readonly observation: string;
