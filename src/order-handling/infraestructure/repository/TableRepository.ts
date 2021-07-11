@@ -1,7 +1,7 @@
 import { Order } from 'src/order-handling/domain/Order';
 import { TableIRepository } from 'src/order-handling/domain/repository/TableIRepository';
 import { TableOrder } from 'src/order-handling/domain/Table';
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository, Not, Repository } from 'typeorm';
 import { TableEntity, TableState } from '../entity/TableEntity';
 import util from '../util/util';
 @EntityRepository(TableEntity)
@@ -14,7 +14,9 @@ export class TableRepository
     await this.save(tableInstance);
   }
   async list(): Promise<TableOrder[]> {
-    const tableOrderEntities = await this.find({ state: TableState.ACTIVO });
+    const tableOrderEntities = await this.find({
+      state: Not(TableState.ELIMINADO),
+    });
     return tableOrderEntities.map((t) => util.entityTableToTableDomain(t));
   }
 

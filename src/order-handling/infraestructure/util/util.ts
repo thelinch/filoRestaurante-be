@@ -54,6 +54,7 @@ const util = {
     const tableOrder = new TableOrder({
       id: tableEntity.id,
       name: tableEntity.name,
+      state: tableEntity.state,
       orders: tableEntity.orders?.map((o) => util.orderEntityToOrderDomain(o)),
     });
     return tableOrder;
