@@ -56,6 +56,7 @@ export class Order extends AggregateRoot {
   }
 
   properties() {
+    console.log('order Detail', this.orderDetails);
     return {
       id: this.id,
       resume: this.resume,
@@ -65,12 +66,8 @@ export class Order extends AggregateRoot {
       state: this.state,
       orderDetails: this.orderDetails?.map((o) => ({
         id: o.Id,
-        product: {
-          id: o.Product.Id,
-          name: o.Product.Name,
-          price: o.Product.Price,
-          quantity: o.Product.Quantity,
-        },
+        product: o.Product.properties(),
+        orderedQuantity: o.OrderedQuantity,
       })),
     };
   }
@@ -87,11 +84,10 @@ export class Order extends AggregateRoot {
 
   static create(props: OrderBodyRequestDto): Order {
     const orderNew = this.dtoToDomain(props);
-    Object.assign(orderNew, props);
     return orderNew;
   }
   createdEvent() {
-    this.apply(Object.assign(new OrderCreatedEvent(), this.properties()));
+    this.apply(Object.assign(new OrderCreatedEvent(), this));
   }
 
   reject() {
@@ -122,10 +118,15 @@ export class Order extends AggregateRoot {
             id: o.product.id,
             categories: [],
             name: o.product.name,
+            price: o.product.price,
           }),
           orderedQuantity: o.orderedQuantity,
         }),
     );
+    const totalPayment = orderDetails.reduce((prev, curr) => {
+      prev += curr.Product.Price * curr.OrderedQuantity;
+      return prev;
+    }, 0);
     const tableOrder = new TableOrder({
       name: orderDto.table.name,
       orders: [],
@@ -133,15 +134,17 @@ export class Order extends AggregateRoot {
     });
     const order = new Order(
       orderDto.id,
-      orderDto.resume,
+      orderDetails
+        .map((od) => `${od.Product.Name}(${od.OrderedQuantity})`)
+        .join('*'),
       orderDto.observation,
-      orderDto.total,
+      totalPayment,
       tableOrder,
-      '',
+      OrderState.CREADO,
       orderDetails,
+      undefined,
     );
 
-    Object.assign(order, orderDto);
     return order;
   }
 }

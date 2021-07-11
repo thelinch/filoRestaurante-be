@@ -5,11 +5,11 @@ import { TableBodyRequestDto } from './tableBodyRequestDto';
 export class OrderDetailBodyRequestDto {
   @IsNotEmpty({ message: 'el id no debe ser vacio' })
   @IsUUID('all', { message: 'version uuid no soportado' })
-  readonly id: string;
+   id: string;
   @IsNotEmpty({ message: 'debe contener un producto' })
   @ValidateNested()
-  readonly product: ProductBodyRequestDto;
+   product: ProductBodyRequestDto;
   @IsNotEmpty({ message: 'Debe contener la cantidad ordenada' })
   @IsPositive({ message: 'Debe ser un numero positivo' })
-  readonly orderedQuantity: number;
+   orderedQuantity: number;
 }

@@ -8,4 +8,5 @@ export interface TableIRepository {
   updated: (table: Omit<TableOrder, 'State'>) => Promise<void>;
   updatedState: (table: Pick<TableOrder, 'State' | 'Id'>) => Promise<void>;
   listOrderOfTable: (tableId: string) => Promise<Order[]>;
+  findById: (tableId: string) => Promise<TableOrder>;
 }

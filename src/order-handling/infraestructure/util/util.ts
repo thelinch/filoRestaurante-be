@@ -31,8 +31,8 @@ const util = {
   },
   orderEntityToOrderDomain: function (orderEntity: OrderEntity): Order {
     const tableOrder = new TableOrder({
-      id: orderEntity.table.id,
-      name: orderEntity.table.name,
+      id: orderEntity.table?.id,
+      name: orderEntity.table?.name,
     });
     const orderDetails: OrderDetail[] = orderEntity.orderDetails.map((o) =>
       this.orderDetailEntityToModel(o),

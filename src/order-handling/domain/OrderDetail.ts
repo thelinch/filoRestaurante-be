@@ -11,7 +11,9 @@ export class OrderDetail {
   private product: Product;
   private orderedQuantity: number;
   constructor(props: OrderDetailProperties) {
-    Object.assign(this, props);
+    this.id = props.id;
+    this.product = props.product;
+    this.orderedQuantity = props.orderedQuantity;
   }
   get Id(): string {
     return this.id;

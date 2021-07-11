@@ -10,9 +10,9 @@ import { OrderBodyRequestDto } from 'src/order-handling/interface/dto/OrderBodyR
 export class OrderController {
   constructor(private OrderService: OrderService) {}
   @Post()
-  created(@Body() orderBodyRequestDto: OrderBodyRequestDto) {
+  async created(@Body() orderBodyRequestDto: OrderBodyRequestDto) {
     const order = Order.create(orderBodyRequestDto);
-    this.OrderService.create(order);
+    await this.OrderService.create(order);
   }
   @Get('/:id/payment')
   async payment(@Param('id') orderId: string) {

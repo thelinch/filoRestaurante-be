@@ -13,6 +13,9 @@ export class TableService {
   async remove(tableId: string) {
     await this.tableRepository.removed(tableId);
   }
+  async findBy(tableId: string) {
+    return await this.tableRepository.findById(tableId);
+  }
   async list() {
     return await this.tableRepository.list();
   }

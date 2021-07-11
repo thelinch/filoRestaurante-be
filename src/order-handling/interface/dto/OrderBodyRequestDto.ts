@@ -10,17 +10,13 @@ import { TableBodyRequestDto } from './tableBodyRequestDto';
 export class OrderBodyRequestDto {
   @IsNotEmpty({ message: 'el id no debe ser vacio' })
   @IsUUID('all', { message: 'version uuid no soportado' })
-  readonly id: string;
-  readonly observation?: string;
-  @IsNotEmpty({ message: 'el resumen es requerido' })
-  readonly resume: string;
-  @IsNotEmpty({ message: 'el resumen es requerido' })
-  readonly total: number;
+   id: string;
+   observation?: string;
   @IsNotEmpty({ message: 'Debe contener la mesa' })
   @ValidateNested()
-  readonly table: TableBodyRequestDto;
+   table: TableBodyRequestDto;
 
   @IsNotEmpty({ message: 'Debe contener al menos un producto' })
   @ValidateNested()
-  readonly orderDetails: OrderDetailBodyRequestDto[];
+   orderDetails: OrderDetailBodyRequestDto[];
 }

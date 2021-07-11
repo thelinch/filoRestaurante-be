@@ -22,7 +22,7 @@ export class OrderRepository
     await this.save(orderEntity);
   }
   async created(order: Order): Promise<void> {
-    await this.save(util.domainOrderToOrderEntity(order));
+    await this.save({...util.domainOrderToOrderEntity(order),fechaCreacion:new Date()});
   }
   async listOrderDetailOfOrder(orderId: number): Promise<OrderDetail[]> {
     const order = await this.findOne({

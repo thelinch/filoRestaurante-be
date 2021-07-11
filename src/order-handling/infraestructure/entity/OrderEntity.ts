@@ -20,7 +20,7 @@ export class OrderEntity {
   id: string;
   @Column()
   resume: string;
-  @Column()
+  @Column({ nullable: true })
   observation: string;
   @Column()
   total: number;
@@ -28,7 +28,10 @@ export class OrderEntity {
   state: string;
   @Column({ type: 'date' })
   fechaCreacion: Date;
-  @ManyToOne(() => TableEntity)
+  @ManyToOne(() => TableEntity, (t) => t.orders, {
+    nullable: false,
+    onUpdate: 'CASCADE',
+  })
   table: TableEntity;
   @OneToMany(() => OrderDetailEntity, (orderDetail) => orderDetail.order, {
     orphanedRowAction: 'delete',
