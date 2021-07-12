@@ -116,7 +116,7 @@ export class Order extends AggregateRoot {
           id: o.id,
           product: new Product({
             id: o.product.id,
-            categories: [],
+            categories: o.product.categories,
             name: o.product.name,
             price: o.product.price,
           }),

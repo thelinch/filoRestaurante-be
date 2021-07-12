@@ -1,5 +1,6 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   ManyToOne,
   OneToMany,
@@ -39,4 +40,7 @@ export class OrderEntity {
     cascade: true,
   })
   orderDetails: OrderDetailEntity[];
+  @CreateDateColumn()
+  @Column()
+  created_at: Date;
 }

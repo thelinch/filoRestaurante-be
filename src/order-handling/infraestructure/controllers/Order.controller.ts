@@ -12,6 +12,10 @@ export class OrderController {
   @Post()
   async created(@Body() orderBodyRequestDto: OrderBodyRequestDto) {
     const order = Order.create(orderBodyRequestDto);
+    console.log(
+      'order',
+      order.properties().orderDetails.map((o) => o.product.categories),
+    );
     await this.OrderService.create(order);
   }
   @Get('/:id/payment')

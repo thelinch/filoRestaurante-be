@@ -19,6 +19,7 @@ import { CategoryRepository } from './infraestructure/repository/CategoryReposit
 import { OrderRepository } from './infraestructure/repository/OrderRepository';
 import { ProductRepository } from './infraestructure/repository/ProductRepository';
 import { TableRepository } from './infraestructure/repository/TableRepository';
+import { WsInit } from './infraestructure/ws/ws.init';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { TableRepository } from './infraestructure/repository/TableRepository';
     OrderAttendedHandler,
     OrderCreatedHandler,
     OrderPaymentHandler,
+    WsInit,
   ],
   exports: [TypeOrmModule],
 })

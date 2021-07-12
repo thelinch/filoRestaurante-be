@@ -38,7 +38,6 @@ export class ProductRepository
   }
   async updated(product: Product): Promise<void> {
     const productInstance: ProductEntity = util.productDomainToEntity(product);
-    console.log('p', productInstance);
     await this.save(productInstance);
   }
   async decreaseAmount(orderDetails: OrderDetail[]): Promise<void> {

@@ -22,7 +22,10 @@ export class OrderRepository
     await this.save(orderEntity);
   }
   async created(order: Order): Promise<void> {
-    await this.save({...util.domainOrderToOrderEntity(order),fechaCreacion:new Date()});
+    await this.save({
+      ...util.domainOrderToOrderEntity(order),
+      fechaCreacion: new Date(),
+    });
   }
   async listOrderDetailOfOrder(orderId: number): Promise<OrderDetail[]> {
     const order = await this.findOne({
@@ -45,6 +48,7 @@ export class OrderRepository
       .andWhere('order.fechaCreacion=:fechaCreacion', {
         fechaCreacion: moment().format('YYYY-MM-DD'),
       })
+      .orderBy('order.created_at')
       .getMany();
     console.log('q', orders);
     return orders.map((o) => util.orderEntityToOrderDomain(o));

@@ -12,4 +12,6 @@ export class ProductBodyRequestDto {
   readonly quantity: number;
   @IsPositive({ message: 'El precio debe ser positivo' })
   readonly price: number;
+  @IsNotEmpty({ message: 'Debe contener las categorias' })
+  readonly categories: any[];
 }
