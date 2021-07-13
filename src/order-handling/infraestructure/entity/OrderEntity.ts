@@ -41,7 +41,7 @@ export class OrderEntity {
     cascade: true,
   })
   orderDetails: OrderDetailEntity[];
-  @CreateDateColumn()
   @Column()
+  @CreateDateColumn()
   created_at: Date;
 }

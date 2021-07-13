@@ -21,7 +21,7 @@ export class OrderService {
 
   async payments(orders: Order[]) {
     for (let i = 0; i < orders.length; i++) {
-      console.log("oirder",orders[i])
+      console.log('oirder', orders[i]);
       const order: Order = await this.orderRepository.findById(orders[i].Id);
       const orderContext = this.publisher.mergeObjectContext(order);
       orderContext.payment();
@@ -64,7 +64,7 @@ export class OrderService {
   }
   async listOrdersForTable(tableId: string): Promise<Order[]> {
     return await this.orderRepository.listOrderOfTableAndStates(tableId, [
-      OrderState.CREADO,
+      OrderState.ATENDIDO,
     ]);
   }
 }
