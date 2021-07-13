@@ -79,7 +79,8 @@ export class Order extends AggregateRoot {
     return this.state;
   }
   payment() {
-    this.apply(Object.assign(new OrderPaymentEvent(), this.properties()));
+    this.state = OrderState.PAGADO;
+    this.apply(Object.assign(new OrderPaymentEvent(), this));
   }
 
   static create(props: OrderBodyRequestDto): Order {

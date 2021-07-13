@@ -54,32 +54,40 @@ export class OrderRepository
     return orders.map((o) => util.orderEntityToOrderDomain(o));
   }
 
-  async listOrderOfTable(tableId: string): Promise<Order[]> {
+  async listOrderOfTableAndStates(
+    tableId: string,
+    states: OrderState[] = [],
+  ): Promise<Order[]> {
     const table: TableEntity = await this.createQueryBuilder()
-      .select('')
+      .select('table')
       .from(TableEntity, 'table')
       .leftJoinAndSelect('table.orders', 'order')
+      .leftJoinAndSelect('order.orderDetails', 'orderDetail')
+      .leftJoinAndSelect('orderDetail.product', 'product')
       .where('order.fechaCreacion=:fechaCreacion', {
-        fechaCreacion: new Date(),
+        fechaCreacion: moment().format('YYYY-MM-DD'),
       })
-      .andWhere('order.state in(...:statesOrder)', {
-        stateOrder: [
-          OrderState.ATENDIDO,
-          OrderState.CREADO,
-          OrderState.ENREALIZACION,
-        ],
+      .andWhere('order.state in(:...statesOrder)', {
+        statesOrder: states,
       })
       .andWhere('table.id=:tableId', { tableId: tableId })
-
+      .orderBy('order.fechaCreacion')
       .getOne();
-    return table.orders.map((o) => util.orderEntityToOrderDomain(o));
+    return table
+      ? table.orders.map((o) =>
+          util.orderEntityToOrderDomain({ ...o, table: table }),
+        )
+      : [];
   }
   async updateOrder(order: Omit<Order, 'state'>): Promise<void> {
     const orderEntity = util.domainOrderToOrderEntity(order);
     await this.save(orderEntity);
   }
   async findById(orderId: string): Promise<Order> {
-    const orderEntity = await this.findOne({ id: orderId });
+    const orderEntity = await this.findOne({
+      relations: ['orderDetails', 'orderDetails.product',"table"],
+      where: { id: orderId },
+    });
     return orderEntity ? util.orderEntityToOrderDomain(orderEntity) : undefined;
   }
   async removed(orderId: string): Promise<void> {

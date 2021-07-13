@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
 import { Category } from '../domain/Category';
 import { Order } from '../domain/Order';
+import { OrderState } from '../infraestructure/entity/OrderEntity';
 import { OrderRepository } from '../infraestructure/repository/OrderRepository';
 
 @Injectable()
@@ -18,6 +19,16 @@ export class OrderService {
     orderContext.commit();
   }
 
+  async payments(orders: Order[]) {
+    for (let i = 0; i < orders.length; i++) {
+      console.log("oirder",orders[i])
+      const order: Order = await this.orderRepository.findById(orders[i].Id);
+      const orderContext = this.publisher.mergeObjectContext(order);
+      orderContext.payment();
+      await this.orderRepository.updateState(orderContext);
+      orderContext.commit();
+    }
+  }
   async listForCategories(categories: Category[]) {
     return await this.orderRepository.listForCategories(categories);
   }
@@ -36,7 +47,6 @@ export class OrderService {
     orderContext.commit();
   }
   async create(order: Order) {
-    
     const orderContext = this.publisher.mergeObjectContext(order);
     orderContext.createdEvent();
     await this.orderRepository.created(order);
@@ -53,6 +63,8 @@ export class OrderService {
     await this.orderRepository.updateOrder(order);
   }
   async listOrdersForTable(tableId: string): Promise<Order[]> {
-    return await this.orderRepository.listOrderOfTable(tableId);
+    return await this.orderRepository.listOrderOfTableAndStates(tableId, [
+      OrderState.CREADO,
+    ]);
   }
 }

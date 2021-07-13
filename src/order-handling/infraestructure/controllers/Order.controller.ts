@@ -18,9 +18,10 @@ export class OrderController {
     );
     await this.OrderService.create(order);
   }
-  @Get('/:id/payment')
-  async payment(@Param('id') orderId: string) {
-    await this.OrderService.payment(orderId);
+  @Post('/payment')
+  async payment(@Body() orders: OrderBodyRequestDto[]) {
+    const ordersDomain = orders.map((o) => Order.create(o));
+    await this.OrderService.payments(ordersDomain);
   }
   @Post('/:id/update')
   update(@Body() orderBodyRequestDto: OrderBodyRequestDto) {

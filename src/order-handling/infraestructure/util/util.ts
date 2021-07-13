@@ -19,8 +19,14 @@ const util = {
     orderDetailEntity: OrderDetailEntity,
   ): OrderDetail {
     const product = new Product({
-      name: orderDetailEntity.product.id,
+      name: orderDetailEntity.product.name,
       id: orderDetailEntity.product.id,
+      price: orderDetailEntity.product.price,
+      categories: orderDetailEntity.product.categories
+        ? orderDetailEntity.product.categories.map((c) =>
+            util.categoryEntityToDomain(c),
+          )
+        : [],
     });
     const orderDetail = new OrderDetail({
       product: product,

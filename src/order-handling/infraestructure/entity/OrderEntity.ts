@@ -14,6 +14,7 @@ export enum OrderState {
   ELIMINADO = 'eliminado',
   ATENDIDO = 'atendido',
   ENREALIZACION = 'en realizacion',
+  PAGADO = 'pagado',
 }
 @Entity({ name: 'order' })
 export class OrderEntity {
@@ -23,7 +24,7 @@ export class OrderEntity {
   resume: string;
   @Column({ nullable: true })
   observation: string;
-  @Column()
+  @Column({ type: 'decimal', precision: 8, scale: 2 })
   total: number;
   @Column({ type: 'enum', enum: OrderState, default: OrderState.CREADO })
   state: string;
