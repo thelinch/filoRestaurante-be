@@ -12,10 +12,6 @@ export class OrderController {
   @Post()
   async created(@Body() orderBodyRequestDto: OrderBodyRequestDto) {
     const order = Order.create(orderBodyRequestDto);
-    console.log(
-      'order',
-      order.properties().orderDetails.map((o) => o.product.categories),
-    );
     await this.OrderService.create(order);
   }
   @Post('/payment')
@@ -40,6 +36,10 @@ export class OrderController {
   async listOrderForTable(@Param('tableId') tableId: string) {
     return await this.OrderService.listOrdersForTable(tableId);
   }
+  @Get('/:id/inProgress')
+  async inProgress(@Param('id') orderId: string) {
+    return await this.OrderService.inProgress(orderId);
+  }
   @Get('/:id/reject')
   async reject(@Param('id') orderId: string) {
     await this.OrderService.reject(orderId);
@@ -47,5 +47,9 @@ export class OrderController {
   @Get('/:id/remove')
   async remove(@Param('id') orderId: string) {
     await this.OrderService.reject(orderId);
+  }
+  @Get('/:id/attend')
+  async attend(@Param('id') orderId: string) {
+    await this.OrderService.attended(orderId);
   }
 }

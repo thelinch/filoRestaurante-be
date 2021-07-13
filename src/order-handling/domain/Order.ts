@@ -100,7 +100,12 @@ export class Order extends AggregateRoot {
     throw new UnprocessableEntityException('No se puede eliminar la orden');
   }
   attended() {
+    this.state = OrderState.ATENDIDO;
     this.apply(Object.assign(new OrderAttendedEvent(), this));
+  }
+  inProgress() {
+    this.state = OrderState.ENREALIZACION;
+    //this.apply(Object.assign(new OrderAttendedEvent(), this));
   }
   remove() {
     if (this.state == OrderState.CREADO) {

@@ -15,7 +15,7 @@ export class OrderService {
     const order: Order = await this.orderRepository.findById(orderId);
     const orderContext = this.publisher.mergeObjectContext(order);
     orderContext.payment();
-    await this.orderRepository.updateOrder(order);
+    await this.orderRepository.updateState(order);
     orderContext.commit();
   }
 
@@ -36,7 +36,7 @@ export class OrderService {
     const order: Order = await this.orderRepository.findById(orderId);
     const orderContext = this.publisher.mergeObjectContext(order);
     orderContext.attended();
-    await this.orderRepository.updateOrder(order);
+    await this.orderRepository.updateState(order);
     orderContext.commit();
   }
   async reject(orderId: string) {
@@ -56,6 +56,13 @@ export class OrderService {
     const order: Order = await this.orderRepository.findById(orderId);
     const orderContext = this.publisher.mergeObjectContext(order);
     orderContext.remove();
+    await this.orderRepository.updateState(order);
+    orderContext.commit();
+  }
+  async inProgress(orderId: string) {
+    const order: Order = await this.orderRepository.findById(orderId);
+    const orderContext = this.publisher.mergeObjectContext(order);
+    order.inProgress();
     await this.orderRepository.updateState(order);
     orderContext.commit();
   }
