@@ -1,8 +1,13 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { UserService } from 'src/managment-user/application/userService';
-import { User } from 'src/managment-user/domain/User';
+import { User, UserProperties } from 'src/managment-user/domain/User';
 import { JwtService } from '@nestjs/jwt';
-const bcrypt = require('bcrypt');
+import * as bcrypt from 'bcrypt';
+
 const saltRounds = 10;
 
 @Injectable()
@@ -16,18 +21,33 @@ export class authService {
     return await this.userService.authentication({ userName, password });
   }
   async login(user: any) {
-    const salt = bcrypt.genSaltSync(saltRounds);
-    user.password = bcrypt.hashSync(user.password, salt);
+    type userPropertiesToJwt = Pick<UserProperties, 'id' | 'userName'>;
     const userDomain: User = await this.userService.findByUserNameAndPassword({
       userName: user.userName,
       passwordHash: user.password,
     });
     if (!userDomain) {
-      throw new UnauthorizedException();
+      throw new NotFoundException({
+        message: 'usuario no encontrado',
+        statusCode: 404,
+      });
     }
+    if (
+      userDomain &&
+      !(await bcrypt.compare(user.password, userDomain.password))
+    ) {
+      throw new NotFoundException({
+        message: 'usuario no encontrado',
+        statusCode: 404,
+      });
+    }
+    const userProperties: userPropertiesToJwt = userDomain.properties();
     return {
       ...userDomain,
-      access_token: this.jwtService.sign(userDomain.properties()),
+      access_token: this.jwtService.sign({
+        sub: userDomain.id,
+        userName: userDomain.name,
+      }),
     };
   }
 }
