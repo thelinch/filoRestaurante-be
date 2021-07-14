@@ -34,6 +34,7 @@ export class Order extends AggregateRoot {
   private fechaCreacion: undefined | string;
   private state: string;
   private orderDetails: OrderDetail[];
+  user: any;
   constructor(
     id: string,
     resume: string,
@@ -69,6 +70,7 @@ export class Order extends AggregateRoot {
         product: o.Product.properties(),
         orderedQuantity: o.OrderedQuantity,
       })),
+      user: this.user,
     };
   }
 
@@ -150,6 +152,7 @@ export class Order extends AggregateRoot {
       orderDetails,
       undefined,
     );
+    order.user = orderDto.user;
 
     return order;
   }

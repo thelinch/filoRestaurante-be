@@ -52,6 +52,7 @@ const util = {
       orderEntity.state,
       orderDetails,
     );
+    orderDomain.user = { name: orderEntity.user.name };
     return orderDomain;
   },
 

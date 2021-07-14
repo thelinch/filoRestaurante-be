@@ -38,6 +38,7 @@ export class OrderRepository
     const orders: OrderEntity[] = await this.createQueryBuilder()
       .select('order')
       .from(OrderEntity, 'order')
+      .leftJoinAndSelect('order.user', 'user')
       .leftJoinAndSelect('order.table', 'table')
       .leftJoinAndSelect('order.orderDetails', 'orderDetail')
       .leftJoinAndSelect('orderDetail.product', 'product')
@@ -85,7 +86,7 @@ export class OrderRepository
   }
   async findById(orderId: string): Promise<Order> {
     const orderEntity = await this.findOne({
-      relations: ['orderDetails', 'orderDetails.product',"table"],
+      relations: ['orderDetails', 'orderDetails.product', 'table',"user"],
       where: { id: orderId },
     });
     return orderEntity ? util.orderEntityToOrderDomain(orderEntity) : undefined;
