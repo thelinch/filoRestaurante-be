@@ -1,6 +1,6 @@
 import { UnauthorizedException } from '@nestjs/common';
 import { Role } from './Role';
-const bcrypt = require('bcrypt');
+import * as bcrypt from 'bcrypt';
 const saltRounds = 10;
 export interface UserProperties {
   readonly id: string;
@@ -30,10 +30,10 @@ export class User {
       roles: this.roles?.map((r) => r.properties()),
     };
   }
-  static create(props: UserProperties): User {
+  static async create(props: UserProperties): Promise<User> {
     const user = new User(props);
-    const salt = bcrypt.genSaltSync(saltRounds);
-    user.password = bcrypt.hashSync(user.password, salt);
+    const salt = await bcrypt.genSalt();
+    user.password = await bcrypt.hash(user.password, salt);
     return user;
   }
   authenticate({ userName, password }) {

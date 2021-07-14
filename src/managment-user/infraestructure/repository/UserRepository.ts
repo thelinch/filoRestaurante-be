@@ -24,15 +24,16 @@ export class UserRepository
     await this.save({ id: user.id, state: user.state });
   }
   async findbyUserAndPassword(
-    user: Pick<User, 'password' | 'userName'>,
+    user: Pick<User, 'password' | 'userName' >,
   ): Promise<User | undefined> {
     const userEntity = await this.findOne({
       where: {
-        password: user.password,
         userName: user.userName,
         state: userState.ACTIVO,
       },
+      relations:["roles","roles.actions"]
     });
+
     return userEntity ? mapperUtil.userEntityToDomain(userEntity) : undefined;
   }
 }

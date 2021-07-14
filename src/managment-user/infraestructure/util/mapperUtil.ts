@@ -11,7 +11,7 @@ const mapperUtil = {
       this.roleEntityToDomain(r),
     );
     const userDomain = new User({ ...userEntity, roles: roles });
-    return null;
+    return userDomain;
   },
   actionEntityToDomain: function (actionEntity: ActionEntity): Action {
     const action = new Action(actionEntity);

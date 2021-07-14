@@ -14,7 +14,7 @@ import { UserRepository } from './infraestructure/repository/UserRepository';
       ActionRepository,
     ]),
   ],
-  controllers: [AuthController],
+  controllers: [],
   providers: [UserService],
   exports: [UserService],
 })
