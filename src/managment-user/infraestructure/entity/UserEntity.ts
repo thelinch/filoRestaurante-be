@@ -4,6 +4,8 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -24,7 +26,8 @@ export class UserEntity {
   password: string;
   @Column({ type: 'enum', enum: userState, default: userState.ACTIVO })
   state: string;
-  @OneToMany(() => RoleEntity, (r) => r.user)
+  @ManyToMany(() => RoleEntity)
+  @JoinTable()
   roles: RoleEntity[];
   @CreateDateColumn()
   created_at: Date;

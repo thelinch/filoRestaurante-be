@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserService } from './application/userService';
-import { AuthController } from './infraestructure/controller/auth.controller';
+import { ActionController } from './infraestructure/controller/action.controller';
+import { RoleController } from './infraestructure/controller/role.controller';
+import { UserController } from './infraestructure/controller/user.controller';
 import { ActionRepository } from './infraestructure/repository/ActionRepository';
 import { RoleRepository } from './infraestructure/repository/RoleRepository';
 import { UserRepository } from './infraestructure/repository/UserRepository';
@@ -14,7 +16,7 @@ import { UserRepository } from './infraestructure/repository/UserRepository';
       ActionRepository,
     ]),
   ],
-  controllers: [],
+  controllers: [UserController,ActionController,RoleController],
   providers: [UserService],
   exports: [UserService],
 })

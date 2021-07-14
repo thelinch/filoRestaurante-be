@@ -15,7 +15,8 @@ export class RoleRepository
     await this.save(roleEntity);
   }
   async list(): Promise<Role[]> {
-    const rolesE: RoleEntity[] = await this.find();
+    const rolesE: RoleEntity[] = await this.find({ relations: ['actions'] });
+    console.log(rolesE);
     return rolesE.map((r) => mapperUtil.roleEntityToDomain(r));
   }
 }
