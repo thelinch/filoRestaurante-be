@@ -1,3 +1,5 @@
+import { User } from 'src/managment-user/domain/User';
+import { UserEntity } from 'src/managment-user/infraestructure/entity/UserEntity';
 import {
   Column,
   CreateDateColumn,
@@ -44,4 +46,6 @@ export class OrderEntity {
   @Column()
   @CreateDateColumn()
   created_at: Date;
+  @ManyToOne(() => UserEntity,{nullable:false})
+  user: UserEntity;
 }

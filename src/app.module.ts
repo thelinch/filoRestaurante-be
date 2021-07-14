@@ -9,6 +9,10 @@ import { OrderDetailEntity } from './order-handling/infraestructure/entity/Order
 import { OrderEntity } from './order-handling/infraestructure/entity/OrderEntity';
 import { ProductEntity } from './order-handling/infraestructure/entity/ProductEntity';
 import { TableEntity } from './order-handling/infraestructure/entity/TableEntity';
+import { UserEntity } from './managment-user/infraestructure/entity/UserEntity';
+import { RoleEntity } from './managment-user/infraestructure/entity/RoleEntity';
+import { ActionEntity } from './managment-user/infraestructure/entity/ActionEntity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -26,10 +30,14 @@ import { TableEntity } from './order-handling/infraestructure/entity/TableEntity
         OrderEntity,
         ProductEntity,
         TableEntity,
+        UserEntity,
+        RoleEntity,
+        ActionEntity,
       ],
     }),
     OrderHandlingModule,
     ManagmentUserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

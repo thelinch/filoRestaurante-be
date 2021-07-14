@@ -1,4 +1,3 @@
-import { CategoryEntity } from 'src/order-handling/infraestructure/entity/CategoryEntity';
 import { Category } from '../Category';
 
 export interface CategoryIRepository {
