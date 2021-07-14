@@ -12,6 +12,7 @@ export class OrderCreatedEvent implements IEvent, OrderProperties {
   total: number;
   table: TableOrder;
   state: string;
+  user: any;
   /* constructor(id: string, resume: string, observation: string) {
     this.id = id;
     this.resume = resume;

@@ -64,6 +64,7 @@ export class OrderRepository
       .from(TableEntity, 'table')
       .leftJoinAndSelect('table.orders', 'order')
       .leftJoinAndSelect('order.orderDetails', 'orderDetail')
+      .leftJoinAndSelect('order.user', 'user')
       .leftJoinAndSelect('orderDetail.product', 'product')
       .where('order.fechaCreacion=:fechaCreacion', {
         fechaCreacion: moment().format('YYYY-MM-DD'),
@@ -86,7 +87,7 @@ export class OrderRepository
   }
   async findById(orderId: string): Promise<Order> {
     const orderEntity = await this.findOne({
-      relations: ['orderDetails', 'orderDetails.product', 'table',"user"],
+      relations: ['orderDetails', 'orderDetails.product', 'table', 'user'],
       where: { id: orderId },
     });
     return orderEntity ? util.orderEntityToOrderDomain(orderEntity) : undefined;

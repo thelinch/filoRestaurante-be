@@ -12,5 +12,5 @@ export class OrderPaymentEvent implements IEvent, Readonly<OrderProperties> {
   readonly total: number;
   readonly table: TableOrder;
   readonly state: string;
-
+  readonly user: any;
 }

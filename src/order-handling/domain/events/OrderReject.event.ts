@@ -12,4 +12,5 @@ export class OrderRejectEvent implements IEvent, OrderProperties {
   readonly total: number;
   readonly table: TableOrder;
   readonly state: string;
+  readonly user: any;
 }

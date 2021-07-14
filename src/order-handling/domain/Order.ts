@@ -24,6 +24,7 @@ export interface OrderProperties {
   fechaCreacion: undefined | string;
   orderDetails: OrderDetail[];
   state: string;
+  user: any;
 }
 export class Order extends AggregateRoot {
   private id: string;

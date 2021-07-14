@@ -14,6 +14,7 @@ export class OrderCreatedHandler implements IEventHandler<OrderCreatedEvent> {
     private productRepository: ProductRepository,
   ) {}
   async handle(event: OrderCreatedEvent) {
+    console.log('order created', event);
     this.tableService.updateStateBusy(event.table);
     this.productRepository.decreaseAmount(event.orderDetails);
     this.server.emit('reciveOrder', event);

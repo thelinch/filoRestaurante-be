@@ -12,4 +12,5 @@ export class OrderRemovedEvent implements IEvent, OrderProperties {
   readonly table: TableOrder;
   readonly state: string;
   readonly orderDetails: OrderDetail[];
+  readonly user: any;
 }
