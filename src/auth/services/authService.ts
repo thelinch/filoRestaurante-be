@@ -41,7 +41,6 @@ export class authService {
         statusCode: 404,
       });
     }
-    console.log("user",userDomain)
     return {
       ...userDomain,
       access_token: this.jwtService.sign({

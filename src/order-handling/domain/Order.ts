@@ -58,7 +58,6 @@ export class Order extends AggregateRoot {
   }
 
   properties() {
-    console.log('order Detail', this.orderDetails);
     return {
       id: this.id,
       resume: this.resume,

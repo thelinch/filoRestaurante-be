@@ -99,7 +99,6 @@ export class OrderRepository
       })
       .orderBy('order.created_at')
       .getMany();
-    console.log('q', orders);
     return orders.map((o) => util.orderEntityToOrderDomain(o));
   }
 

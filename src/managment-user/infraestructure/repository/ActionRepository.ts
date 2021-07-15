@@ -16,7 +16,6 @@ export class ActionRepository
   }
   async list(): Promise<Action[]> {
     const actionsE = await this.find();
-    console.log(actionsE)
     return actionsE.map((a) => mapperUtil.actionEntityToDomain(a));
   }
 }

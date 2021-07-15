@@ -16,7 +16,6 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Get('/prueba')
   prueba(@Request() req) {
-    console.log(req.user);
     return 'prueba';
   }
 }

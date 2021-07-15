@@ -15,7 +15,6 @@ export class WsInit
   server: Server;
   afterInit(server: any) {
 
-    console.log('inicio');
   }
 
   handleDisconnect(client: any) {
