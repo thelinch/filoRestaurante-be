@@ -9,7 +9,6 @@ export class OrderAttendedHandler implements IEventHandler<OrderAttendedEvent> {
   @WebSocketServer()
   server: Server;
   handle(event: OrderAttendedEvent) {
-    console.log('ejecutando el evento', event);
     this.server.emit('attendOrder', event);
   }
 }

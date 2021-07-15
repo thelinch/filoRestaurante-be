@@ -97,7 +97,7 @@ export class Order extends AggregateRoot {
   reject() {
     if (this.state == OrderState.CREADO) {
       this.state = OrderState.RECHAZADO;
-      this.apply(Object.assign(new OrderRejectEvent(), this.properties()));
+      this.apply(Object.assign(new OrderRejectEvent(), this));
       return;
     }
     throw new UnprocessableEntityException('No se puede eliminar la orden');

@@ -39,16 +39,6 @@ export class OrderRepository
   }
 
   async sumTotalSalesInToday(): Promise<number> {
-    console.log(
-      this.createQueryBuilder('')
-        .select('sum(orderE.total)', 'sum')
-        .from(OrderEntity, 'orderE')
-        .where('orderE.fechaCreacion=:fechaCreacion', {
-          fechaCreacion: moment().format('YYYY-MM-DD'),
-        })
-        .andWhere('orderE.state=:state', { state: OrderState.PAGADO })
-        .getSql(),
-    );
     const { sum = 0 } = await this.createQueryBuilder('OrderEntity')
       .select('sum(OrderEntity.total)', 'sum')
       .where('OrderEntity.fechaCreacion=:fechaCreacion', {
@@ -56,7 +46,6 @@ export class OrderRepository
       })
       .andWhere('OrderEntity.state=:state', { state: OrderState.PAGADO })
       .getRawOne();
-    console.log('s', sum);
     return sum;
   }
 
@@ -74,6 +63,7 @@ export class OrderRepository
         fechaFinMoment.format('YYYY-MM-DD') +
         "' GROUP BY p.name,o.fechaCreacion",
     );
+    await queryRunner.release();
     return data;
   }
 
@@ -81,17 +71,14 @@ export class OrderRepository
     const connection = getConnection();
     const queryRunner = connection.createQueryRunner();
     await queryRunner.connect();
-    console.log(
-      'select o.fechaCreacion,SUM(o.total) totalVentas,u.`name` as userName from `order` o inner join user_entity u on u.id=o.userId where o.state="pagado"' +
-        ' and o.fechaCreacion=' +
-        moment().format('YYYY-MM-DD') +
-        ' GROUP BY u.name,o.fechaCreacion',
-    );
+
     const data = await queryRunner.query(
       "select o.fechaCreacion,SUM(o.total) totalVentas,u.`name` as userName from `order` o inner join user_entity u on u.id=o.userId where o.state='pagado' and o.fechaCreacion='" +
         moment().format('YYYY-MM-DD') +
         "' GROUP BY u.name,o.fechaCreacion",
     );
+    await queryRunner.release();
+
     return data;
   }
 

@@ -4,8 +4,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { OrderAttendedHandler } from './application/events/OrderAttendedHandler';
 import { OrderCreatedHandler } from './application/events/OrderCreatedHandler';
 import { OrderPaymentHandler } from './application/events/OrderPaymentHandler';
+import { OrderRejectHandler } from './application/events/OrderRejectHandler';
 import { OrderService } from './application/OrderService';
 import { TableService } from './application/TableService';
+import { OrderRejectEvent } from './domain/events/OrderReject.event';
 import { CategoryController } from './infraestructure/controllers/Category.controller';
 import { OrderController } from './infraestructure/controllers/Order.controller';
 import { ProductController } from './infraestructure/controllers/Product.controller';
@@ -43,6 +45,7 @@ import { WsInit } from './infraestructure/ws/ws.init';
     OrderAttendedHandler,
     OrderCreatedHandler,
     OrderPaymentHandler,
+    OrderRejectHandler,
     WsInit,
   ],
   exports: [TypeOrmModule],

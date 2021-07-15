@@ -81,9 +81,17 @@ export class OrderService {
   async update(order: Order) {
     await this.orderRepository.updateOrder(order);
   }
-  async listOrdersForTable(tableId: string): Promise<Order[]> {
-    return await this.orderRepository.listOrderOfTableAndStates(tableId, [
-      OrderState.ATENDIDO,
-    ]);
+  async tableConstainOrder(tableId: string): Promise<boolean> {
+    const orders = await this.listOrdersForTable(tableId, [OrderState.CREADO]);
+    return orders.length > 0;
+  }
+  async listOrdersForTable(
+    tableId: string,
+    states = [OrderState.ATENDIDO],
+  ): Promise<Order[]> {
+    return await this.orderRepository.listOrderOfTableAndStates(
+      tableId,
+      states,
+    );
   }
 }
