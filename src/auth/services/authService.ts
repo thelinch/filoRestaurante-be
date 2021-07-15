@@ -47,7 +47,7 @@ export class authService {
       access_token: this.jwtService.sign({
         sub: userDomain.id,
         name: userDomain.name
-      }),
+      },{}),
     };
   }
 }

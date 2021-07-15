@@ -14,6 +14,7 @@ export class OrderController {
   @UseGuards(JwtAuthGuard)
   @Post()
   async created(@Body() orderBodyRequestDto: OrderBodyRequestDto, @Req() req) {
+    console.log("u",req.user)
     orderBodyRequestDto.user = req.user;
     const order = Order.create(orderBodyRequestDto);
     await this.OrderService.create(order);
