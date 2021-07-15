@@ -41,12 +41,12 @@ export class authService {
         statusCode: 404,
       });
     }
-    const userProperties: userPropertiesToJwt = userDomain.properties();
+    console.log("user",userDomain)
     return {
       ...userDomain,
       access_token: this.jwtService.sign({
         sub: userDomain.id,
-        userName: userDomain.name,
+        name: userDomain.name
       }),
     };
   }

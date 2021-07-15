@@ -1,5 +1,6 @@
-import { Body, Get, Param, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Get, Param, Post, Req, UseGuards } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
+import { Request } from 'express';
 import { JwtAuthGuard } from 'src/auth/jwt.authGuard';
 import { OrderService } from 'src/order-handling/application/OrderService';
 import { Category } from 'src/order-handling/domain/Category';
@@ -12,13 +13,22 @@ export class OrderController {
   constructor(private OrderService: OrderService) {}
   @UseGuards(JwtAuthGuard)
   @Post()
-  async created(
-    @Body() orderBodyRequestDto: OrderBodyRequestDto,
-    @Request() req,
-  ) {
+  async created(@Body() orderBodyRequestDto: OrderBodyRequestDto, @Req() req) {
     orderBodyRequestDto.user = req.user;
     const order = Order.create(orderBodyRequestDto);
     await this.OrderService.create(order);
+  }
+  @Post('/product/mostSales')
+  async productMusSales(@Req() req: Request) {
+    return await this.OrderService.productMostSales(req.body);
+  }
+  @Get('/user/valorations')
+  async valoration() {
+    return await this.OrderService.getValorationNumericToUserInTodayForOrders();
+  }
+  @Get('/sumSalesToday')
+  async sumTotalSalesInToday() {
+    return await this.OrderService.sumTotalSalesInToday();
   }
   @Post('/payment')
   async payment(@Body() orders: OrderBodyRequestDto[]) {

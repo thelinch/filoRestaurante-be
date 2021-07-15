@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
+import * as moment from 'moment';
 import { Category } from '../domain/Category';
 import { Order } from '../domain/Order';
 import { OrderState } from '../infraestructure/entity/OrderEntity';
@@ -18,10 +19,21 @@ export class OrderService {
     await this.orderRepository.updateState(order);
     orderContext.commit();
   }
+  async productMostSales({ fechaInicio, fechaFin }) {
+    return await this.orderRepository.productMostSales({
+      fechaInicio,
+      fechaFin,
+    });
+  }
+  async sumTotalSalesInToday() {
+    return await this.orderRepository.sumTotalSalesInToday();
+  }
+  async getValorationNumericToUserInTodayForOrders() {
+    return await this.orderRepository.getValorationNumericToUserInTodayForOrders();
+  }
 
   async payments(orders: Order[]) {
     for (let i = 0; i < orders.length; i++) {
-      console.log('oirder', orders[i]);
       const order: Order = await this.orderRepository.findById(orders[i].Id);
       const orderContext = this.publisher.mergeObjectContext(order);
       orderContext.payment();

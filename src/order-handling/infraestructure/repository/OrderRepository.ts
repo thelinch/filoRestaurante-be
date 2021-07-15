@@ -8,8 +8,11 @@ import { TableOrder } from 'src/order-handling/domain/Table';
 import { EntityRepository, Repository } from 'typeorm';
 import { OrderDetailEntity } from '../entity/OrderDetailEntity';
 import { OrderEntity, OrderState } from '../entity/OrderEntity';
+import { ProductEntity } from '../entity/ProductEntity';
 import { TableEntity } from '../entity/TableEntity';
 import util from '../util/util';
+import { getConnection } from 'typeorm';
+
 @EntityRepository(OrderEntity)
 export class OrderRepository
   extends Repository<OrderEntity>
@@ -34,6 +37,64 @@ export class OrderRepository
     });
     return order.orderDetails.map((o) => util.orderDetailEntityToModel(o));
   }
+
+  async sumTotalSalesInToday(): Promise<number> {
+    console.log(
+      this.createQueryBuilder('')
+        .select('sum(orderE.total)', 'sum')
+        .from(OrderEntity, 'orderE')
+        .where('orderE.fechaCreacion=:fechaCreacion', {
+          fechaCreacion: moment().format('YYYY-MM-DD'),
+        })
+        .andWhere('orderE.state=:state', { state: OrderState.PAGADO })
+        .getSql(),
+    );
+    const { sum = 0 } = await this.createQueryBuilder('OrderEntity')
+      .select('sum(OrderEntity.total)', 'sum')
+      .where('OrderEntity.fechaCreacion=:fechaCreacion', {
+        fechaCreacion: moment().format('YYYY-MM-DD'),
+      })
+      .andWhere('OrderEntity.state=:state', { state: OrderState.PAGADO })
+      .getRawOne();
+    console.log('s', sum);
+    return sum;
+  }
+
+  async productMostSales({ fechaInicio = moment(), fechaFin = moment() }) {
+    const fechaInicioMoment = moment(fechaInicio);
+    const fechaFinMoment = moment(fechaFin);
+    const connection = getConnection();
+    const queryRunner = connection.createQueryRunner();
+    await queryRunner.connect();
+
+    const data = await queryRunner.query(
+      "select p.name as productName,sum(od.orderedQuantity) totalOrderQuantity,DATE_FORMAT(o.fechaCreacion,'%Y-%m-%d') fechaCreacion from product p inner  JOIN orderdetail od on od.productId=p.id inner join `order` o on o.id=od.orderId where o.fechaCreacion BETWEEN '" +
+        fechaInicioMoment.format('YYYY-MM-DD') +
+        "' and '" +
+        fechaFinMoment.format('YYYY-MM-DD') +
+        "' GROUP BY p.name,o.fechaCreacion",
+    );
+    return data;
+  }
+
+  async getValorationNumericToUserInTodayForOrders() {
+    const connection = getConnection();
+    const queryRunner = connection.createQueryRunner();
+    await queryRunner.connect();
+    console.log(
+      'select o.fechaCreacion,SUM(o.total) totalVentas,u.`name` as userName from `order` o inner join user_entity u on u.id=o.userId where o.state="pagado"' +
+        ' and o.fechaCreacion=' +
+        moment().format('YYYY-MM-DD') +
+        ' GROUP BY u.name,o.fechaCreacion',
+    );
+    const data = await queryRunner.query(
+      "select o.fechaCreacion,SUM(o.total) totalVentas,u.`name` as userName from `order` o inner join user_entity u on u.id=o.userId where o.state='pagado' and o.fechaCreacion='" +
+        moment().format('YYYY-MM-DD') +
+        "' GROUP BY u.name,o.fechaCreacion",
+    );
+    return data;
+  }
+
   async listForCategories(categories: Category[]): Promise<Order[]> {
     const orders: OrderEntity[] = await this.createQueryBuilder()
       .select('order')
