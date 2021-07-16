@@ -3,8 +3,8 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { UserService } from 'src/managment-user/application/userService';
-import { User, UserProperties } from 'src/managment-user/domain/User';
+import { UserService } from '../../managment-user/application/userService';
+import { User, UserProperties } from '../../managment-user/domain/User';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 

@@ -1,6 +1,6 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
-import { OrderCreatedEvent } from 'src/order-handling/domain/events/OrderCreated.event';
-import { OrderPaymentEvent } from 'src/order-handling/domain/events/OrderPayment.event';
+import { OrderCreatedEvent } from '../../../order-handling/domain/events/OrderCreated.event';
+import { OrderPaymentEvent } from '../../../order-handling/domain/events/OrderPayment.event';
 import { OrderService } from '../OrderService';
 import { TableService } from '../TableService';
 @EventsHandler(OrderPaymentEvent)

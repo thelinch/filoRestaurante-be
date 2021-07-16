@@ -1,8 +1,8 @@
-import { Category } from 'src/order-handling/domain/Category';
-import { Order } from 'src/order-handling/domain/Order';
-import { OrderDetail } from 'src/order-handling/domain/OrderDetail';
-import { Product } from 'src/order-handling/domain/Product';
-import { TableOrder } from 'src/order-handling/domain/Table';
+import { Category } from '../../domain/Category';
+import { Order } from '../../domain/Order';
+import { OrderDetail } from '../../domain/OrderDetail';
+import { Product } from '../../domain/Product';
+import { TableOrder } from '../../domain/Table';
 import { CategoryEntity } from '../entity/CategoryEntity';
 import { OrderDetailEntity } from '../entity/OrderDetailEntity';
 import { OrderEntity } from '../entity/OrderEntity';

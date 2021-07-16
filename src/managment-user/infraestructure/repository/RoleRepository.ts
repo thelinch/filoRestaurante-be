@@ -1,5 +1,5 @@
-import { roleIRepository } from 'src/managment-user/domain/repository/RoleIRepository';
-import { Role } from 'src/managment-user/domain/Role';
+import { roleIRepository } from '../../../managment-user/domain/repository/RoleIRepository';
+import { Role } from '../../../managment-user/domain/Role';
 import { EntityRepository, Repository } from 'typeorm';
 import { RoleEntity } from '../entity/RoleEntity';
 import mapperUtil from '../util/mapperUtil';

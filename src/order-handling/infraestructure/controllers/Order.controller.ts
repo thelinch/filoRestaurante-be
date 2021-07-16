@@ -1,12 +1,12 @@
 import { Body, Get, Param, Post, Req, UseGuards } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
 import { Request } from 'express';
-import { JwtAuthGuard } from 'src/auth/jwt.authGuard';
-import { OrderService } from 'src/order-handling/application/OrderService';
-import { Category } from 'src/order-handling/domain/Category';
-import { Order } from 'src/order-handling/domain/Order';
-import { CategoryBodyRequestDto } from 'src/order-handling/interface/dto/CategoryBodyRequestDto';
-import { OrderBodyRequestDto } from 'src/order-handling/interface/dto/OrderBodyRequestDto';
+import { JwtAuthGuard } from '../../../auth/jwt.authGuard';
+import { OrderService } from '../../application/OrderService';
+import { Category } from '../../domain/Category';
+import { Order } from '../../domain/Order';
+import { CategoryBodyRequestDto } from '../../interface/dto/CategoryBodyRequestDto';
+import { OrderBodyRequestDto } from '../../interface/dto/OrderBodyRequestDto';
 
 @Controller('orders')
 export class OrderController {

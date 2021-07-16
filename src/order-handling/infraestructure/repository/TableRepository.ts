@@ -1,6 +1,6 @@
-import { Order } from 'src/order-handling/domain/Order';
-import { TableIRepository } from 'src/order-handling/domain/repository/TableIRepository';
-import { TableOrder } from 'src/order-handling/domain/Table';
+import { Order } from '../../domain/Order';
+import { TableIRepository } from '../../domain/repository/TableIRepository';
+import { TableOrder } from '../../domain/Table';
 import { EntityRepository, Not, Repository } from 'typeorm';
 import { TableEntity, TableState } from '../entity/TableEntity';
 import util from '../util/util';

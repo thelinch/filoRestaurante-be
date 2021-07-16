@@ -1,8 +1,8 @@
 import { Get, UseGuards } from '@nestjs/common';
 import { Body, Controller, Delete, Param, Post } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/jwt.authGuard';
-import { Product } from 'src/order-handling/domain/Product';
-import { ProductBodyRequestDto } from 'src/order-handling/interface/dto/ProductBodyRequestDto';
+import { JwtAuthGuard } from '../../../auth/jwt.authGuard';
+import { Product } from '../../domain/Product';
+import { ProductBodyRequestDto } from '../../interface/dto/ProductBodyRequestDto';
 import { ProductRepository } from '../repository/ProductRepository';
 import util from '../util/util';
 

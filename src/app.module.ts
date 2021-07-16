@@ -20,8 +20,8 @@ import { AuthModule } from './auth/auth.module';
       type: 'mysql',
       host: 'localhost',
       port: 3306,
-      username: 'root',
-      password: '',
+      username: 'user',
+      password: 'D$veloper123',
       database: 'filo',
       synchronize: false,
       entities: [

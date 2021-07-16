@@ -1,5 +1,4 @@
-import { Order } from 'src/order-handling/domain/Order';
-import { OrderEntity } from 'src/order-handling/infraestructure/entity/OrderEntity';
+import { OrderEntity } from '../../../order-handling/infraestructure/entity/OrderEntity';
 import {
   Column,
   CreateDateColumn,

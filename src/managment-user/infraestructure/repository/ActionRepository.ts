@@ -1,5 +1,5 @@
-import { Action } from 'src/managment-user/domain/Action';
-import { actionIRepository } from 'src/managment-user/domain/repository/ActionIRepository';
+import { Action } from '../../../managment-user/domain/Action';
+import { actionIRepository } from '../../../managment-user/domain/repository/ActionIRepository';
 import { EntityRepository, Repository } from 'typeorm';
 import { ActionEntity } from '../entity/ActionEntity';
 import mapperUtil from '../util/mapperUtil';

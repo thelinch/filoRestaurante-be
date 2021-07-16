@@ -1,6 +1,6 @@
-import { OrderDetail } from 'src/order-handling/domain/OrderDetail';
-import { Product } from 'src/order-handling/domain/Product';
-import { ProductIRepository } from 'src/order-handling/domain/repository/ProductIRepository';
+import { OrderDetail } from '../../domain/OrderDetail';
+import { Product } from '../../domain/Product';
+import { ProductIRepository } from '../../domain/repository/ProductIRepository';
 import { Brackets, EntityRepository, Repository } from 'typeorm';
 import { ProductEntity, ProductState } from '../entity/ProductEntity';
 import * as moment from 'moment';

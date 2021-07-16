@@ -1,14 +1,10 @@
 import * as moment from 'moment';
-import { Category } from 'src/order-handling/domain/Category';
-import { Order } from 'src/order-handling/domain/Order';
-import { OrderDetail } from 'src/order-handling/domain/OrderDetail';
-import { Product } from 'src/order-handling/domain/Product';
-import { OrderIRepository } from 'src/order-handling/domain/repository/OrderIRepository';
-import { TableOrder } from 'src/order-handling/domain/Table';
+import { Category } from '../../domain/Category';
+import { Order } from '../../domain/Order';
+import { OrderDetail } from '../../domain/OrderDetail';
+import { OrderIRepository } from '../../domain/repository/OrderIRepository';
 import { EntityRepository, Repository } from 'typeorm';
-import { OrderDetailEntity } from '../entity/OrderDetailEntity';
 import { OrderEntity, OrderState } from '../entity/OrderEntity';
-import { ProductEntity } from '../entity/ProductEntity';
 import { TableEntity } from '../entity/TableEntity';
 import util from '../util/util';
 import { getConnection } from 'typeorm';

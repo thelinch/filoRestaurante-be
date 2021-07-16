@@ -12,11 +12,6 @@ import { CategoryController } from './infraestructure/controllers/Category.contr
 import { OrderController } from './infraestructure/controllers/Order.controller';
 import { ProductController } from './infraestructure/controllers/Product.controller';
 import { TableOrderController } from './infraestructure/controllers/TableOrder.controller';
-import { CategoryEntity } from './infraestructure/entity/CategoryEntity';
-import { OrderDetailEntity } from './infraestructure/entity/OrderDetailEntity';
-import { OrderEntity } from './infraestructure/entity/OrderEntity';
-import { ProductEntity } from './infraestructure/entity/ProductEntity';
-import { TableEntity } from './infraestructure/entity/TableEntity';
 import { CategoryRepository } from './infraestructure/repository/CategoryRepository';
 import { OrderRepository } from './infraestructure/repository/OrderRepository';
 import { ProductRepository } from './infraestructure/repository/ProductRepository';

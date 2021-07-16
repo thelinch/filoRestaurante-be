@@ -1,9 +1,9 @@
 import { Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { Body } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/jwt.authGuard';
-import { Category } from 'src/order-handling/domain/Category';
-import { CategoryBodyRequestDto } from 'src/order-handling/interface/dto/CategoryBodyRequestDto';
+import { JwtAuthGuard } from '../../../auth/jwt.authGuard';
+import { Category } from '../../domain/Category';
+import { CategoryBodyRequestDto } from '../../interface/dto/CategoryBodyRequestDto';
 import { CategoryRepository } from '../repository/CategoryRepository';
 
 @Controller('categories')

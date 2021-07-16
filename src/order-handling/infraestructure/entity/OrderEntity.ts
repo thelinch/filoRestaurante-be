@@ -1,5 +1,4 @@
-import { User } from 'src/managment-user/domain/User';
-import { UserEntity } from 'src/managment-user/infraestructure/entity/UserEntity';
+import { UserEntity } from '../../../managment-user/infraestructure/entity/UserEntity';
 import {
   Column,
   CreateDateColumn,

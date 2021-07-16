@@ -1,4 +1,4 @@
-import { OrderState } from 'src/order-handling/infraestructure/entity/OrderEntity';
+import { OrderState } from '../../../order-handling/infraestructure/entity/OrderEntity';
 import { Category } from '../Category';
 import { Order } from '../Order';
 import { OrderDetail } from '../OrderDetail';

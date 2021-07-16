@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ManagmentUserModule } from 'src/managment-user/managment-user.module';
+import { ManagmentUserModule } from '../managment-user/managment-user.module';
 import { LocalStrategy } from './localStrategy';
 import { authService } from './services/authService';
 import { PassportModule } from '@nestjs/passport';

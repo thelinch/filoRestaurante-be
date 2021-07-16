@@ -1,5 +1,5 @@
-import { userIRepository } from 'src/managment-user/domain/repository/UserIRepositoru';
-import { User } from 'src/managment-user/domain/User';
+import { userIRepository } from '../../../managment-user/domain/repository/UserIRepositoru';
+import { User } from '../../../managment-user/domain/User';
 import { EntityRepository, Repository } from 'typeorm';
 import { UserEntity, userState } from '../entity/UserEntity';
 import mapperUtil from '../util/mapperUtil';
