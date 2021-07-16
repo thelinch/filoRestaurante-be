@@ -1,6 +1,6 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
-import { OrderRejectEvent } from '../../../order-handling/domain/events/OrderReject.event';
-import { ProductRepository } from '../../../order-handling/infraestructure/repository/ProductRepository';
+import { OrderRejectEvent } from '../../domain/events/OrderReject.event';
+import { ProductRepository } from '../../infraestructure/repository/ProductRepository';
 import { OrderService } from '../OrderService';
 import { TableService } from '../TableService';
 @EventsHandler(OrderRejectEvent)

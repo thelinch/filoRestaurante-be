@@ -1,6 +1,5 @@
 import { IsNotEmpty, IsPositive, IsUUID, ValidateNested } from 'class-validator';
 import { ProductBodyRequestDto } from './ProductBodyRequestDto';
-import { TableBodyRequestDto } from './tableBodyRequestDto';
 
 export class OrderDetailBodyRequestDto {
   @IsNotEmpty({ message: 'el id no debe ser vacio' })

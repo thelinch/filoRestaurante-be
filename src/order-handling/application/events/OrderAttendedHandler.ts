@@ -1,6 +1,6 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
-import { OrderAttendedEvent } from '../../../order-handling/domain/events/OrderAttended.event';
+import { OrderAttendedEvent } from '../../domain/events/OrderAttended.event';
 import { Server } from 'socket.io';
 
 @WebSocketGateway()

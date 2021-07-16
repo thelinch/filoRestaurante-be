@@ -2,7 +2,6 @@ import { Body, Get, UseGuards } from '@nestjs/common';
 import { Controller, Post } from '@nestjs/common';
 import { JwtAuthGuard } from '../../../auth/jwt.authGuard';
 import { ActionRepository } from '../repository/ActionRepository';
-import { RoleRepository } from '../repository/RoleRepository';
 
 @Controller('action')
 export class ActionController {

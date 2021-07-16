@@ -4,7 +4,6 @@ import { JwtAuthGuard } from '../../../auth/jwt.authGuard';
 import { Product } from '../../domain/Product';
 import { ProductBodyRequestDto } from '../../interface/dto/ProductBodyRequestDto';
 import { ProductRepository } from '../repository/ProductRepository';
-import util from '../util/util';
 
 @Controller('products')
 export class ProductController {

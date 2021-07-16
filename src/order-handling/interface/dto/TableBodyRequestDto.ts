@@ -1,5 +1,4 @@
 import { IsNotEmpty, IsUUID } from 'class-validator';
-import { OrderBodyRequestDto } from './OrderBodyRequestDto';
 
 export class TableBodyRequestDto {
   @IsNotEmpty({ message: 'el id no debe ser vacio' })

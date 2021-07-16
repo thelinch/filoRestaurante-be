@@ -1,6 +1,6 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
-import { OrderCreatedEvent } from '../../../order-handling/domain/events/OrderCreated.event';
-import { ProductRepository } from '../../../order-handling/infraestructure/repository/ProductRepository';
+import { OrderCreatedEvent } from '../../domain/events/OrderCreated.event';
+import { ProductRepository } from '../../infraestructure/repository/ProductRepository';
 import { TableService } from '../TableService';
 import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server } from 'socket.io';

@@ -7,7 +7,6 @@ import { OrderPaymentHandler } from './application/events/OrderPaymentHandler';
 import { OrderRejectHandler } from './application/events/OrderRejectHandler';
 import { OrderService } from './application/OrderService';
 import { TableService } from './application/TableService';
-import { OrderRejectEvent } from './domain/events/OrderReject.event';
 import { CategoryController } from './infraestructure/controllers/Category.controller';
 import { OrderController } from './infraestructure/controllers/Order.controller';
 import { ProductController } from './infraestructure/controllers/Product.controller';
