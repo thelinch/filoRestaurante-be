@@ -5,7 +5,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { OrderDetailBodyRequestDto } from './OrderDetailBodyRequestDto';
-import { TableBodyRequestDto } from './tableBodyRequestDto';
+import { TableBodyRequestDto } from './TableBodyRequestDto';
 
 export class OrderBodyRequestDto {
   @IsNotEmpty({ message: 'el id no debe ser vacio' })

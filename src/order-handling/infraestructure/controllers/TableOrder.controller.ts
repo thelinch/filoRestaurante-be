@@ -1,9 +1,9 @@
 import { Body, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
+import { TableBodyRequestDto } from '../../interface/dto/TableBodyRequestDto';
 import { JwtAuthGuard } from '../../../auth/jwt.authGuard';
 import { TableService } from '../../application/TableService';
 import { TableOrder } from '../../domain/Table';
-import { TableBodyRequestDto } from '../../interface/dto/tableBodyRequestDto';
 
 @Controller('tables')
 export class TableOrderController {

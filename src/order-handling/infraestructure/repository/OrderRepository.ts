@@ -1,4 +1,4 @@
-import moment from 'moment';
+import * as moment from 'moment';
 import { Category } from '../../domain/Category';
 import { Order } from '../../domain/Order';
 import { OrderDetail } from '../../domain/OrderDetail';

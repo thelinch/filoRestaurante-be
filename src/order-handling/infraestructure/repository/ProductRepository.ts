@@ -3,7 +3,7 @@ import { Product } from '../../domain/Product';
 import { ProductIRepository } from '../../domain/repository/ProductIRepository';
 import { Brackets, EntityRepository, Repository } from 'typeorm';
 import { ProductEntity, ProductState } from '../entity/ProductEntity';
-import moment from 'moment';
+import * as moment from 'moment';
 
 import util from '../util/util';
 @EntityRepository(ProductEntity)

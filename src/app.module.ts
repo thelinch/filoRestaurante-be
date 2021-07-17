@@ -21,7 +21,7 @@ import { AuthModule } from './auth/auth.module';
       host: 'localhost',
       port: 3306,
       username: 'user',
-      password: 'D$veloper123',
+      password: '',
       database: 'filo',
       synchronize: false,
       entities: [
