@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { OrderHandlingModule } from './order-handling/order-handling.module';
 import { ManagmentUserModule } from './managment-user/managment-user.module';
@@ -20,7 +18,7 @@ import { AuthModule } from './auth/auth.module';
       type: 'mysql',
       host: 'localhost',
       port: 3306,
-      username: 'user',
+      username: 'root',
       password: '',
       database: 'filo',
       synchronize: false,
@@ -39,7 +37,7 @@ import { AuthModule } from './auth/auth.module';
     ManagmentUserModule,
     AuthModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
