@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { OrderDetailEntity } from './OrderDetailEntity';
 import { TableEntity } from './TableEntity';
+import { TypeOrderEntity } from './TypeOrderEntity';
 export enum OrderState {
   CREADO = 'creado',
   RECHAZADO = 'rechazado',
@@ -17,6 +18,7 @@ export enum OrderState {
   ENREALIZACION = 'en realizacion',
   PAGADO = 'pagado',
 }
+
 @Entity({ name: 'order' })
 export class OrderEntity {
   @PrimaryGeneratedColumn('uuid')
@@ -32,7 +34,7 @@ export class OrderEntity {
   @Column({ type: 'date' })
   fechaCreacion: Date;
   @ManyToOne(() => TableEntity, (t) => t.orders, {
-    nullable: false,
+    nullable: true,
     onUpdate: 'CASCADE',
   })
   table: TableEntity;
@@ -45,6 +47,12 @@ export class OrderEntity {
   @Column()
   @CreateDateColumn()
   created_at: Date;
-  @ManyToOne(() => UserEntity,{nullable:false})
+  @ManyToOne(() => UserEntity, { nullable: false })
   user: UserEntity;
+  @ManyToOne(() => TypeOrderEntity, {
+    nullable: false,
+    eager: true,
+    lazy: false,
+  })
+  type: TypeOrderEntity;
 }

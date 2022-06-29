@@ -11,6 +11,7 @@ import { UserEntity } from './managment-user/infraestructure/entity/UserEntity';
 import { RoleEntity } from './managment-user/infraestructure/entity/RoleEntity';
 import { ActionEntity } from './managment-user/infraestructure/entity/ActionEntity';
 import { AuthModule } from './auth/auth.module';
+import { TypeOrderEntity } from './order-handling/infraestructure/entity/TypeOrderEntity';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { AuthModule } from './auth/auth.module';
         UserEntity,
         RoleEntity,
         ActionEntity,
+        TypeOrderEntity,
       ],
     }),
     OrderHandlingModule,

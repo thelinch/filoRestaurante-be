@@ -1,3 +1,4 @@
+import { TypeOrder } from 'src/order-handling/domain/TypeOrder';
 import { Category } from '../../domain/Category';
 import { Order } from '../../domain/Order';
 import { OrderDetail } from '../../domain/OrderDetail';
@@ -8,6 +9,7 @@ import { OrderDetailEntity } from '../entity/OrderDetailEntity';
 import { OrderEntity } from '../entity/OrderEntity';
 import { ProductEntity } from '../entity/ProductEntity';
 import { TableEntity } from '../entity/TableEntity';
+import { TypeOrderEntity } from '../entity/TypeOrderEntity';
 
 const util = {
   domainOrderToOrderEntity: function (order: Partial<Order>): OrderEntity {
@@ -32,6 +34,7 @@ const util = {
       product: product,
       orderedQuantity: orderDetailEntity.orderedQuantity,
       id: orderDetailEntity.id,
+      observation: orderDetailEntity.observation,
     });
     return orderDetail;
   },
@@ -50,6 +53,7 @@ const util = {
       orderEntity.total,
       tableOrder,
       orderEntity.state,
+      orderEntity.type,
       orderDetails,
     );
     orderDomain.user = { name: orderEntity.user.name };
@@ -91,6 +95,14 @@ const util = {
   },
   categoryDomainToEntity: function (category: Category): CategoryEntity {
     const properties = category.properties();
+    return { ...properties };
+  },
+
+  typeOrderEntityToDomain: function (entity: TypeOrderEntity): TypeOrder {
+    return new TypeOrder(entity);
+  },
+  typeOrderDomainToEntity: function (entity: TypeOrder): TypeOrderEntity {
+    const properties = entity.properties();
     return { ...properties };
   },
 };

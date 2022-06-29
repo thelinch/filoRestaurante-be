@@ -21,6 +21,7 @@ export class OrderRepository
     await this.save(orderEntity);
   }
   async created(order: Order): Promise<void> {
+    console.log('ob', util.domainOrderToOrderEntity(order));
     await this.save({
       ...util.domainOrderToOrderEntity(order),
       fechaCreacion: new Date(),
@@ -87,6 +88,7 @@ export class OrderRepository
       .leftJoinAndSelect('order.orderDetails', 'orderDetail')
       .leftJoinAndSelect('orderDetail.product', 'product')
       .leftJoinAndSelect('product.categories', 'category')
+      .leftJoinAndSelect('order.type', 'type')
       .where('category.id IN(:...categoriesId)', {
         categoriesId: categories.map((c) => c.Id),
       })
@@ -109,6 +111,7 @@ export class OrderRepository
       .leftJoinAndSelect('order.orderDetails', 'orderDetail')
       .leftJoinAndSelect('order.user', 'user')
       .leftJoinAndSelect('orderDetail.product', 'product')
+      .leftJoinAndSelect('order.type', 'type')
       .where('order.fechaCreacion=:fechaCreacion', {
         fechaCreacion: moment().format('YYYY-MM-DD'),
       })

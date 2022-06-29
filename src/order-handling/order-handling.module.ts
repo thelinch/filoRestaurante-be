@@ -11,10 +11,12 @@ import { CategoryController } from './infraestructure/controllers/Category.contr
 import { OrderController } from './infraestructure/controllers/Order.controller';
 import { ProductController } from './infraestructure/controllers/Product.controller';
 import { TableOrderController } from './infraestructure/controllers/TableOrder.controller';
+import { TypeOrderController } from './infraestructure/controllers/typeOrder.controller';
 import { CategoryRepository } from './infraestructure/repository/CategoryRepository';
 import { OrderRepository } from './infraestructure/repository/OrderRepository';
 import { ProductRepository } from './infraestructure/repository/ProductRepository';
 import { TableRepository } from './infraestructure/repository/TableRepository';
+import { TypeOrderRepository } from './infraestructure/repository/TypeOrderRepository';
 import { WsInit } from './infraestructure/ws/ws.init';
 
 @Module({
@@ -24,6 +26,7 @@ import { WsInit } from './infraestructure/ws/ws.init';
       OrderRepository,
       TableRepository,
       ProductRepository,
+      TypeOrderRepository,
     ]),
     CqrsModule,
   ],
@@ -32,6 +35,7 @@ import { WsInit } from './infraestructure/ws/ws.init';
     OrderController,
     ProductController,
     TableOrderController,
+    TypeOrderController,
   ],
   providers: [
     TableService,

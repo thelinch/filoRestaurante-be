@@ -35,6 +35,7 @@ export class Order extends AggregateRoot {
   private fechaCreacion: undefined | string;
   private state: string;
   private orderDetails: OrderDetail[];
+  private type: { color: string; id: string; name: string; price: number };
   user: any;
   constructor(
     id: string,
@@ -43,6 +44,7 @@ export class Order extends AggregateRoot {
     total: number,
     table: TableOrder,
     state: string,
+    type: { color: string; id: string; name: string; price: number },
     orderDetails: OrderDetail[] = [],
     fechaCreacion = undefined,
   ) {
@@ -54,6 +56,7 @@ export class Order extends AggregateRoot {
     this.state = state;
     this.orderDetails = orderDetails;
     this.table = table;
+    this.type = type;
     this.fechaCreacion = fechaCreacion;
   }
 
@@ -70,6 +73,7 @@ export class Order extends AggregateRoot {
         product: o.Product.properties(),
         orderedQuantity: o.OrderedQuantity,
       })),
+      type: this.type,
       user: this.user,
     };
   }
@@ -129,26 +133,36 @@ export class Order extends AggregateRoot {
             price: o.product.price,
           }),
           orderedQuantity: o.orderedQuantity,
+          observation: o.observation,
         }),
     );
-    const totalPayment = orderDetails.reduce((prev, curr) => {
-      prev += curr.Product.Price * curr.OrderedQuantity;
-      return prev;
-    }, 0);
+    const totalPayment =
+      orderDetails.reduce((prev, curr) => {
+        prev += curr.Product.Price * curr.OrderedQuantity;
+        return prev;
+      }, 0) + orderDto.type.price;
     const tableOrder = new TableOrder({
       name: orderDto.table.name,
       orders: [],
       id: orderDto.table.id,
     });
+    const observation = orderDetails
+      .filter((order) => order.Observation)
+      .map(
+        (orderDetail) =>
+          `${orderDetail.Product.Name}(${orderDetail.Observation})`,
+      )
+      .join(',');
     const order = new Order(
       orderDto.id,
       orderDetails
         .map((od) => `${od.Product.Name}(${od.OrderedQuantity})`)
         .join('*'),
-      orderDto.observation,
+      observation,
       totalPayment,
       tableOrder,
       OrderState.CREADO,
+      orderDto.type,
       orderDetails,
       undefined,
     );
