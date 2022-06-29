@@ -3,6 +3,7 @@ export interface TypeOrderProperties {
   readonly name: string;
   readonly color: string;
   readonly price: number;
+  readonly localAttention: boolean;
 }
 
 export class TypeOrder {
@@ -10,6 +11,7 @@ export class TypeOrder {
   name: string;
   color: string;
   price: number;
+  localAttention: boolean;
   constructor(properties: TypeOrderProperties) {
     Object.assign(this, properties);
   }
@@ -20,6 +22,7 @@ export class TypeOrder {
       name: this.name,
       color: this.color,
       price: this.price,
+      localAttention: this.localAttention,
     };
   }
   get Id(): string {

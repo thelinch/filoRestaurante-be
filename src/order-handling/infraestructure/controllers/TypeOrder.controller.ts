@@ -14,13 +14,20 @@ export class TypeOrderController {
   @UseGuards(JwtAuthGuard)
   @Post()
   async create(
-    @Body() typeOrder: { color: string; name: string; price: number },
+    @Body()
+    typeOrder: {
+      color: string;
+      name: string;
+      price: number;
+      localAttention: boolean;
+    },
   ) {
     await this.TypeOrderRepository.created(
       new TypeOrder({
         color: typeOrder.color,
         name: typeOrder.name,
         price: typeOrder.price,
+        localAttention: typeOrder.localAttention,
       }),
     );
   }
@@ -33,6 +40,7 @@ export class TypeOrderController {
       name: string;
       id: string;
       price: number;
+      localAttention: boolean;
     },
   ) {
     await this.TypeOrderRepository.save({
@@ -40,6 +48,7 @@ export class TypeOrderController {
       name: typeOrder.name,
       price: typeOrder.price,
       id: typeOrder.id,
+      localAttention: typeOrder.localAttention
     });
   }
 

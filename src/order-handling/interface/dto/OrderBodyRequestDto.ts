@@ -21,5 +21,11 @@ export class OrderBodyRequestDto {
   orderDetails: OrderDetailBodyRequestDto[];
   user: any;
   @IsNotEmpty({ message: 'Debe contener un tipo' })
-  type: { id: string; color: string; name: string; price: number };
+  type: {
+    id: string;
+    color: string;
+    name: string;
+    price: number;
+    localAttention: boolean;
+  };
 }

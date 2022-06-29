@@ -21,7 +21,6 @@ export class OrderRepository
     await this.save(orderEntity);
   }
   async created(order: Order): Promise<void> {
-    console.log('ob', util.domainOrderToOrderEntity(order));
     await this.save({
       ...util.domainOrderToOrderEntity(order),
       fechaCreacion: new Date(),

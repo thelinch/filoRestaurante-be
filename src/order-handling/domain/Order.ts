@@ -35,7 +35,13 @@ export class Order extends AggregateRoot {
   private fechaCreacion: undefined | string;
   private state: string;
   private orderDetails: OrderDetail[];
-  private type: { color: string; id: string; name: string; price: number };
+  private type: {
+    color: string;
+    id: string;
+    name: string;
+    price: number;
+    localAttention: boolean;
+  };
   user: any;
   constructor(
     id: string,
@@ -44,7 +50,13 @@ export class Order extends AggregateRoot {
     total: number,
     table: TableOrder,
     state: string,
-    type: { color: string; id: string; name: string; price: number },
+    type: {
+      color: string;
+      id: string;
+      name: string;
+      price: number;
+      localAttention: boolean;
+    },
     orderDetails: OrderDetail[] = [],
     fechaCreacion = undefined,
   ) {
@@ -72,6 +84,7 @@ export class Order extends AggregateRoot {
         id: o.Id,
         product: o.Product.properties(),
         orderedQuantity: o.OrderedQuantity,
+        observation: o.Observation,
       })),
       type: this.type,
       user: this.user,
@@ -141,11 +154,13 @@ export class Order extends AggregateRoot {
         prev += curr.Product.Price * curr.OrderedQuantity;
         return prev;
       }, 0) + orderDto.type.price;
-    const tableOrder = new TableOrder({
-      name: orderDto.table.name,
-      orders: [],
-      id: orderDto.table.id,
-    });
+    const tableOrder = !orderDto.type.localAttention
+      ? null
+      : new TableOrder({
+          name: orderDto.table.name,
+          orders: [],
+          id: orderDto.table.id,
+        });
     const observation = orderDetails
       .filter((order) => order.Observation)
       .map(

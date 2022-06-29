@@ -19,6 +19,8 @@ export class TypeOrderEntity {
   name: string;
   @Column({ nullable: false, type: 'double' })
   price: number;
+  @Column({ nullable: false, type: 'boolean', default: true })
+  localAttention: boolean;
   @OneToMany(() => OrderEntity, (orderDetail) => orderDetail.type, {
     orphanedRowAction: 'delete',
     persistence: true,

@@ -27,7 +27,9 @@ export class TableService {
     await this.tableRepository.updatedState(table);
   }
   async updateStateBusy(table: TableOrder) {
-    table.occupy();
-    await this.tableRepository.updatedState(table);
+    if (table) {
+      table.occupy();
+      await this.tableRepository.updatedState(table);
+    }
   }
 }
