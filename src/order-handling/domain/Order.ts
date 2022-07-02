@@ -1,5 +1,7 @@
 import { UnprocessableEntityException } from '@nestjs/common';
 import { AggregateRoot } from '@nestjs/cqrs';
+import GenerateCodeI from '../../shared/infraestructure/generateCodeI';
+import { GenerateUuidShortUuid } from '../../shared/infraestructure/generateCodeShortUuid';
 import { OrderState } from '../infraestructure/entity/OrderEntity';
 import { OrderBodyRequestDto } from '../interface/dto/OrderBodyRequestDto';
 import { OrderAttendedEvent } from './events/OrderAttended.event';
@@ -15,6 +17,7 @@ export interface OrderProperties {
   id: string;
   resume: string;
   observation: string;
+  code: string;
   total: number;
   table: TableOrder;
   fechaCreacion: undefined | string;
@@ -38,6 +41,7 @@ export class Order extends AggregateRoot {
     price: number;
     localAttention: boolean;
   };
+  private code: string;
   user: any;
   constructor(
     id: string,
@@ -46,6 +50,7 @@ export class Order extends AggregateRoot {
     total: number,
     table: TableOrder,
     state: string,
+    code: string,
     type: {
       color: string;
       id: string;
@@ -57,6 +62,7 @@ export class Order extends AggregateRoot {
     fechaCreacion = undefined,
   ) {
     super();
+    this.code = code;
     this.id = id;
     this.resume = resume;
     this.observation = observation;
@@ -82,6 +88,7 @@ export class Order extends AggregateRoot {
         orderedQuantity: o.OrderedQuantity,
         observation: o.Observation,
       })),
+      code: this.code,
       type: this.type,
       user: this.user,
     };
@@ -92,6 +99,9 @@ export class Order extends AggregateRoot {
   }
   get State() {
     return this.state;
+  }
+  get Code() {
+    return this.code;
   }
   payment() {
     this.state = OrderState.PAGADO;
@@ -131,6 +141,7 @@ export class Order extends AggregateRoot {
     throw new UnprocessableEntityException('No se puede eliminar la orden');
   }
   static dtoToDomain(orderDto: OrderBodyRequestDto): Order {
+    const generatorCode: GenerateCodeI = new GenerateUuidShortUuid();
     const orderDetails: OrderDetail[] = orderDto.orderDetails.map(
       (o) =>
         new OrderDetail({
@@ -173,6 +184,7 @@ export class Order extends AggregateRoot {
       totalPayment,
       tableOrder,
       OrderState.CREADO,
+      generatorCode.generateCode(),
       orderDto.type,
       orderDetails,
       undefined,

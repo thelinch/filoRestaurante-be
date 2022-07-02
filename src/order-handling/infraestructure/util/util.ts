@@ -53,6 +53,7 @@ const util = {
       orderEntity.total,
       tableOrder,
       orderEntity.state,
+      orderEntity.code,
       orderEntity.type,
       orderDetails,
     );

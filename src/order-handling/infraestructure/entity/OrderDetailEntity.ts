@@ -1,7 +1,14 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { OrderEntity } from './OrderEntity';
 import { ProductEntity } from './ProductEntity';
-
+export enum OrderDetailState {
+  CREADO = 'creado',
+  RECHAZADO = 'rechazado',
+  ELIMINADO = 'eliminado',
+  ATENDIDO = 'atendido',
+  ENREALIZACION = 'en realizacion',
+  PAGADO = 'pagado',
+}
 @Entity({ name: 'orderDetail' })
 export class OrderDetailEntity {
   @PrimaryGeneratedColumn('uuid')

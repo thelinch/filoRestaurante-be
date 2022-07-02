@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { GenerateUuidShortUuid } from '../shared/infraestructure/generateCodeShortUuid';
 import { OrderAttendedHandler } from './application/events/OrderAttendedHandler';
 import { OrderCreatedHandler } from './application/events/OrderCreatedHandler';
 import { OrderPaymentHandler } from './application/events/OrderPaymentHandler';
@@ -38,6 +39,7 @@ import { WsInit } from './infraestructure/ws/ws.init';
     TypeOrderController,
   ],
   providers: [
+    { provide: 'GenerateCodeI', useClass: GenerateUuidShortUuid },
     TableService,
     OrderService,
     OrderAttendedHandler,

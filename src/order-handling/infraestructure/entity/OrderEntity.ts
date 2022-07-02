@@ -27,8 +27,11 @@ export class OrderEntity {
   resume: string;
   @Column({ nullable: true })
   observation: string;
-  @Column({ type: 'decimal', precision: 8, scale: 2 })
+  @Column({ type: 'float' })
   total: number;
+  @Column({ type: 'varchar', nullable: false, length: 50 })
+  code: string;
+
   @Column({ type: 'enum', enum: OrderState, default: OrderState.CREADO })
   state: string;
   @Column({ type: 'date' })

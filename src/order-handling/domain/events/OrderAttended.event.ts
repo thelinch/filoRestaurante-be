@@ -13,4 +13,5 @@ export class OrderAttendedEvent implements IEvent, OrderProperties {
   readonly table: TableOrder;
   readonly state: string;
   readonly user: any;
+  readonly code: string;
 }

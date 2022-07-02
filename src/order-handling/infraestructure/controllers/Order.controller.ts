@@ -1,6 +1,6 @@
-import { Body, Get, Param, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Get, Param, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import { JwtAuthGuard } from '../../../auth/jwt.authGuard';
 import { OrderService } from '../../application/OrderService';
 import { Category } from '../../domain/Category';
@@ -13,10 +13,15 @@ export class OrderController {
   constructor(private OrderService: OrderService) {}
   @UseGuards(JwtAuthGuard)
   @Post()
-  async created(@Body() orderBodyRequestDto: OrderBodyRequestDto, @Req() req) {
+  async created(
+    @Body() orderBodyRequestDto: OrderBodyRequestDto,
+    @Req() req,
+    @Res() res: Response,
+  ) {
     orderBodyRequestDto.user = req.user;
     const order = Order.create(orderBodyRequestDto);
     await this.OrderService.create(order);
+    res.send({ codigo: order.Code });
   }
   @UseGuards(JwtAuthGuard)
   @Post('/product/mostSales')
