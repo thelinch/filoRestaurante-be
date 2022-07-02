@@ -1,12 +1,9 @@
 import { Body, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
-import { TableBodyRequestDto } from '../../interface/dto/TableBodyRequestDto';
 import { JwtAuthGuard } from '../../../auth/jwt.authGuard';
-import { TableService } from '../../application/TableService';
-import { TableOrder } from '../../domain/Table';
-import { TypeOrderEntity } from '../entity/TypeOrderEntity';
+import { TypeOrder } from '../../domain/TypeOrder';
+
 import { TypeOrderRepository } from '../repository/TypeOrderRepository';
-import { TypeOrder } from 'src/order-handling/domain/TypeOrder';
 
 @Controller('typeOrders')
 export class TypeOrderController {
@@ -48,7 +45,7 @@ export class TypeOrderController {
       name: typeOrder.name,
       price: typeOrder.price,
       id: typeOrder.id,
-      localAttention: typeOrder.localAttention
+      localAttention: typeOrder.localAttention,
     });
   }
 

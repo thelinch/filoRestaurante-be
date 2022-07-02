@@ -1,10 +1,7 @@
-import { Category } from '../../domain/Category';
-import { CategoryIRepository } from '../../domain/repository/categoryIRepository';
 import { EntityRepository, Repository } from 'typeorm';
-import { CategoryEntity, CategoryState } from '../entity/CategoryEntity';
 import util from '../util/util';
 import { TypeOrderEntity } from '../entity/TypeOrderEntity';
-import { TypeOrder } from 'src/order-handling/domain/TypeOrder';
+import { TypeOrder } from '../../domain/TypeOrder';
 @EntityRepository(TypeOrderEntity)
 export class TypeOrderRepository extends Repository<TypeOrderEntity> {
   async created(typeOrder: TypeOrder | TypeOrder[]): Promise<void> {
@@ -20,5 +17,4 @@ export class TypeOrderRepository extends Repository<TypeOrderEntity> {
     const categoriesEntity = await this.find();
     return categoriesEntity.map((c) => util.typeOrderEntityToDomain(c));
   }
-
 }

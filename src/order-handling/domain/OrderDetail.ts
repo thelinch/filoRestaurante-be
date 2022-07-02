@@ -27,7 +27,7 @@ export class OrderDetail {
   get OrderedQuantity(): number {
     return this.orderedQuantity;
   }
-  get Observation(){
-    return this.observation
+  get Observation() {
+    return this.observation;
   }
 }

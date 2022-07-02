@@ -1,12 +1,4 @@
-import { UserEntity } from '../../../managment-user/infraestructure/entity/UserEntity';
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { OrderEntity } from './OrderEntity';
 
 @Entity({ name: 'typeOrder' })

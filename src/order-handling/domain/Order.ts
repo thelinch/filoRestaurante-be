@@ -1,8 +1,4 @@
-import {
-  UnprocessableEntityException,
-  UnauthorizedException,
-  InternalServerErrorException,
-} from '@nestjs/common';
+import { UnprocessableEntityException } from '@nestjs/common';
 import { AggregateRoot } from '@nestjs/cqrs';
 import { OrderState } from '../infraestructure/entity/OrderEntity';
 import { OrderBodyRequestDto } from '../interface/dto/OrderBodyRequestDto';

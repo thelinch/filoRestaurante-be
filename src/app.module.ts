@@ -12,34 +12,50 @@ import { RoleEntity } from './managment-user/infraestructure/entity/RoleEntity';
 import { ActionEntity } from './managment-user/infraestructure/entity/ActionEntity';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrderEntity } from './order-handling/infraestructure/entity/TypeOrderEntity';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import configuration from '../configuration';
+
+/* dotenv.config({ path: `${__dirname}.env.${process.env.NODE_ENV}` }); */
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: '',
-      database: 'filo',
-      synchronize: false,
-      entities: [
-        CategoryEntity,
-        OrderDetailEntity,
-        OrderEntity,
-        ProductEntity,
-        TableEntity,
-        UserEntity,
-        RoleEntity,
-        ActionEntity,
-        TypeOrderEntity,
-      ],
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [configuration],
+      envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => {
+        console.log('usuario', configService.get<string>('bd.name'));
+        return {
+          type: 'mysql',
+          host: configService.get<string>('bd.host'),
+          port: configService.get<number>('bd.port'),
+          username: configService.get<string>('bd.user'),
+          password: configService.get<string>('bd.password') || '',
+          database: configService.get<string>('bd.name'),
+          synchronize: false,
+          entities: [
+            CategoryEntity,
+            OrderDetailEntity,
+            OrderEntity,
+            ProductEntity,
+            TableEntity,
+            UserEntity,
+            RoleEntity,
+            ActionEntity,
+            TypeOrderEntity,
+          ],
+        };
+      },
+    }),
+
     OrderHandlingModule,
     ManagmentUserModule,
     AuthModule,
   ],
-  controllers: [],
   providers: [],
+  controllers: [],
 })
 export class AppModule {}

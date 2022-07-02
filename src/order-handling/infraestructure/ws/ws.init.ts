@@ -13,9 +13,7 @@ export class WsInit
 {
   @WebSocketServer()
   server: Server;
-  afterInit(server: any) {
-
-  }
+  afterInit(server: any) {}
 
   handleDisconnect(client: any) {
     console.log('client Desconnect');

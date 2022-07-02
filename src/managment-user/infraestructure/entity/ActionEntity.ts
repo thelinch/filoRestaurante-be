@@ -13,5 +13,4 @@ export class ActionEntity {
   name: string;
   @CreateDateColumn()
   created_at: Date;
-  
 }

@@ -43,10 +43,13 @@ export class authService {
     }
     return {
       ...userDomain,
-      access_token: this.jwtService.sign({
-        sub: userDomain.id,
-        name: userDomain.name
-      },{}),
+      access_token: this.jwtService.sign(
+        {
+          sub: userDomain.id,
+          name: userDomain.name,
+        },
+        {},
+      ),
     };
   }
 }
