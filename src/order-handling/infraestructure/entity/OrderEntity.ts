@@ -10,6 +10,7 @@ import {
 import { OrderDetailEntity } from './OrderDetailEntity';
 import { TableEntity } from './TableEntity';
 import { TypeOrderEntity } from './TypeOrderEntity';
+import { StatusEntity } from './StatusEntity';
 export enum OrderState {
   CREADO = 'creado',
   RECHAZADO = 'rechazado',
@@ -32,7 +33,7 @@ export class OrderEntity {
   @Column({ type: 'varchar', nullable: false, length: 50 })
   code: string;
 
-  @Column({ type: 'enum', enum: OrderState, default: OrderState.CREADO })
+  @Column({ type: 'varchar' })
   state: string;
   @Column({ type: 'date' })
   fechaCreacion: Date;
@@ -45,6 +46,7 @@ export class OrderEntity {
     orphanedRowAction: 'delete',
     persistence: true,
     cascade: true,
+    onUpdate: 'CASCADE',
   })
   orderDetails: OrderDetailEntity[];
   @Column()
@@ -52,10 +54,9 @@ export class OrderEntity {
   created_at: Date;
   @ManyToOne(() => UserEntity, { nullable: false })
   user: UserEntity;
-  @ManyToOne(() => TypeOrderEntity, {
-    nullable: false,
-    eager: true,
-    lazy: false,
-  })
+  @ManyToOne(() => TypeOrderEntity, { nullable: false, onUpdate: 'CASCADE' })
   type: TypeOrderEntity;
+  @Column({ name: 'statusId' })
+  @ManyToOne(() => StatusEntity, { primary: true })
+  status: StatusEntity;
 }

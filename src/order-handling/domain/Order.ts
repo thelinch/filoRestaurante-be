@@ -11,6 +11,7 @@ import { OrderRejectEvent } from './events/OrderReject.event';
 import { OrderRemovedEvent } from './events/OrderRemove.event';
 import { OrderDetail } from './OrderDetail';
 import { Product } from './Product';
+import { Status } from './Status';
 
 import { TableOrder } from './Table';
 export interface OrderProperties {
@@ -34,6 +35,7 @@ export class Order extends AggregateRoot {
   private fechaCreacion: undefined | string;
   private state: string;
   private orderDetails: OrderDetail[];
+  private status: Status;
   private type: {
     color: string;
     id: string;
@@ -43,14 +45,15 @@ export class Order extends AggregateRoot {
   };
   private code: string;
   user: any;
+
   constructor(
     id: string,
     resume: string,
     observation: string,
     total: number,
     table: TableOrder,
-    state: string,
     code: string,
+    status: Status,
     type: {
       color: string;
       id: string;
@@ -62,12 +65,13 @@ export class Order extends AggregateRoot {
     fechaCreacion = undefined,
   ) {
     super();
+    this.status = status;
     this.code = code;
     this.id = id;
     this.resume = resume;
     this.observation = observation;
     this.total = total;
-    this.state = state;
+    this.state = status.Name;
     this.orderDetails = orderDetails;
     this.table = table;
     this.type = type;
@@ -87,10 +91,12 @@ export class Order extends AggregateRoot {
         product: o.Product.properties(),
         orderedQuantity: o.OrderedQuantity,
         observation: o.Observation,
+        status: o.Status.properties(),
       })),
       code: this.code,
       type: this.type,
       user: this.user,
+      status: this.status.properties(),
     };
   }
 
@@ -108,8 +114,8 @@ export class Order extends AggregateRoot {
     this.apply(Object.assign(new OrderPaymentEvent(), this));
   }
 
-  static create(props: OrderBodyRequestDto): Order {
-    const orderNew = this.dtoToDomain(props);
+  static create(props: OrderBodyRequestDto, status?: Status): Order {
+    const orderNew = this.dtoToDomain(props, status);
     return orderNew;
   }
   createdEvent() {
@@ -140,8 +146,11 @@ export class Order extends AggregateRoot {
     }
     throw new UnprocessableEntityException('No se puede eliminar la orden');
   }
-  static dtoToDomain(orderDto: OrderBodyRequestDto): Order {
+  static dtoToDomain(orderDto: OrderBodyRequestDto, status?: Status): Order {
     const generatorCode: GenerateCodeI = new GenerateUuidShortUuid();
+    const statusProcess = orderDto.status
+      ? new Status({ ...orderDto.status })
+      : status;
     const orderDetails: OrderDetail[] = orderDto.orderDetails.map(
       (o) =>
         new OrderDetail({
@@ -154,6 +163,7 @@ export class Order extends AggregateRoot {
           }),
           orderedQuantity: o.orderedQuantity,
           observation: o.observation,
+          status,
         }),
     );
     const totalPayment =
@@ -183,8 +193,8 @@ export class Order extends AggregateRoot {
       observation,
       totalPayment,
       tableOrder,
-      OrderState.CREADO,
       generatorCode.generateCode(),
+      statusProcess,
       orderDto.type,
       orderDetails,
       undefined,

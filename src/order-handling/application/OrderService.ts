@@ -2,14 +2,17 @@ import { Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
 import { Category } from '../domain/Category';
 import { Order } from '../domain/Order';
+import { Status } from '../domain/Status';
 import { OrderState } from '../infraestructure/entity/OrderEntity';
 import { OrderRepository } from '../infraestructure/repository/OrderRepository';
+import { StatusRepository } from '../infraestructure/repository/StatusRepository';
 
 @Injectable()
 export class OrderService {
   constructor(
     private publisher: EventPublisher,
     private orderRepository: OrderRepository,
+    private statusRepository: StatusRepository,
   ) {}
   async payment(orderId: string) {
     const order: Order = await this.orderRepository.findById(orderId);
@@ -17,6 +20,14 @@ export class OrderService {
     orderContext.payment();
     await this.orderRepository.updateState(order);
     orderContext.commit();
+  }
+
+  async getStates() {
+    return await this.statusRepository.find({ order: { order: 'ASC' } });
+  }
+  async fisrtState() {
+    const status = await this.statusRepository.firstState();
+    return status;
   }
   async productMostSales({ fechaInicio, fechaFin }) {
     return await this.orderRepository.productMostSales({
@@ -57,10 +68,12 @@ export class OrderService {
     await this.orderRepository.updateState(order);
     orderContext.commit();
   }
-  async create(order: Order) {
-    const orderContext = this.publisher.mergeObjectContext(order);
+  async create(order: any) {
+    const firstState = await this.fisrtState();
+    const orderDomain = Order.dtoToDomain(order, new Status(firstState));
+    const orderContext = this.publisher.mergeObjectContext(orderDomain);
     orderContext.createdEvent();
-    await this.orderRepository.created(order);
+    await this.orderRepository.created(orderDomain);
     orderContext.commit();
   }
   async remove(orderId: string) {

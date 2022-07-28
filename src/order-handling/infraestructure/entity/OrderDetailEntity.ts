@@ -1,6 +1,7 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { OrderEntity } from './OrderEntity';
 import { ProductEntity } from './ProductEntity';
+import { StatusEntity } from './StatusEntity';
 export enum OrderDetailState {
   CREADO = 'creado',
   RECHAZADO = 'rechazado',
@@ -21,4 +22,6 @@ export class OrderDetailEntity {
   product: ProductEntity;
   @ManyToOne(() => OrderEntity, (o) => o.orderDetails)
   order: OrderEntity;
+  @ManyToOne((type) => StatusEntity, { eager: true })
+  status: StatusEntity;
 }

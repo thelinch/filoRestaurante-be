@@ -8,6 +8,7 @@ import { OrderEntity, OrderState } from '../entity/OrderEntity';
 import { TableEntity } from '../entity/TableEntity';
 import util from '../util/util';
 import { getConnection } from 'typeorm';
+import { StatusEntity } from '../entity/StatusEntity';
 
 @EntityRepository(OrderEntity)
 export class OrderRepository
@@ -20,9 +21,13 @@ export class OrderRepository
     orderEntity.state = order.State;
     await this.save(orderEntity);
   }
+
   async created(order: Order): Promise<void> {
+    const orderProperties = util.domainOrderToOrderEntity(order);
+    console.log('order Entity', orderProperties);
+
     await this.save({
-      ...util.domainOrderToOrderEntity(order),
+      ...orderProperties,
       fechaCreacion: new Date(),
     });
   }
@@ -84,10 +89,12 @@ export class OrderRepository
       .from(OrderEntity, 'order')
       .leftJoinAndSelect('order.user', 'user')
       .leftJoinAndSelect('order.table', 'table')
-      .leftJoinAndSelect('order.orderDetails', 'orderDetail')
-      .leftJoinAndSelect('orderDetail.product', 'product')
-      .leftJoinAndSelect('product.categories', 'category')
+      .innerJoinAndSelect('order.orderDetails', 'orderDetail')
+      .innerJoinAndSelect('orderDetail.product', 'product')
+      .leftJoinAndSelect('orderDetail.status', 'statusDetail')
+      .innerJoinAndSelect('product.categories', 'category')
       .leftJoinAndSelect('order.type', 'type')
+      .leftJoinAndSelect('order.status', 'statusOrder')
       .where('category.id IN(:...categoriesId)', {
         categoriesId: categories.map((c) => c.Id),
       })
@@ -96,6 +103,10 @@ export class OrderRepository
       })
       .orderBy('order.created_at')
       .getMany();
+    console.log(
+      'orders',
+      orders.map((o) => o.orderDetails),
+    );
     return orders.map((o) => util.orderEntityToOrderDomain(o));
   }
 

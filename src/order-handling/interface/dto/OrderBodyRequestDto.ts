@@ -28,4 +28,10 @@ export class OrderBodyRequestDto {
     price: number;
     localAttention: boolean;
   };
+  status?: {
+    id: string;
+    name: string;
+    color: string;
+    order: number;
+  };
 }

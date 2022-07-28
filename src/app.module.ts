@@ -14,6 +14,7 @@ import { AuthModule } from './auth/auth.module';
 import { TypeOrderEntity } from './order-handling/infraestructure/entity/TypeOrderEntity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from '../configuration';
+import { StatusEntity } from './order-handling/infraestructure/entity/StatusEntity';
 
 /* dotenv.config({ path: `${__dirname}.env.${process.env.NODE_ENV}` }); */
 
@@ -27,7 +28,12 @@ import configuration from '../configuration';
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
-        console.log('usuario', configService.get<string>('bd.name'));
+        console.log(
+          'usuario',
+          configService.get<string>('bd.name'),
+          'host',
+          configService.get<string>('bd.host'),
+        );
         return {
           type: 'mysql',
           host: configService.get<string>('bd.host'),
@@ -35,7 +41,7 @@ import configuration from '../configuration';
           username: configService.get<string>('bd.user'),
           password: configService.get<string>('bd.password') || '',
           database: configService.get<string>('bd.name'),
-          synchronize: false,
+          synchronize: true,
           entities: [
             CategoryEntity,
             OrderDetailEntity,
@@ -46,6 +52,7 @@ import configuration from '../configuration';
             RoleEntity,
             ActionEntity,
             TypeOrderEntity,
+            StatusEntity,
           ],
         };
       },

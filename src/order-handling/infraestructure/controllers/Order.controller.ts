@@ -19,7 +19,8 @@ export class OrderController {
     @Res() res: Response,
   ) {
     orderBodyRequestDto.user = req.user;
-    const order = Order.create(orderBodyRequestDto);
+    const order = req.body;
+    /* const order = Order.create(orderBodyRequestDto); */
     await this.OrderService.create(order);
     res.send({ codigo: order.Code });
   }
@@ -38,6 +39,11 @@ export class OrderController {
   @Get('/sumSalesToday')
   async sumTotalSalesInToday() {
     return await this.OrderService.sumTotalSalesInToday();
+  }
+  @UseGuards(JwtAuthGuard)
+  @Get('/states')
+  async getStates() {
+    return await this.OrderService.getStates();
   }
   @UseGuards(JwtAuthGuard)
   @Post('/payment')

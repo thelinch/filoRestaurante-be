@@ -13,10 +13,6 @@ export class TypeOrderEntity {
   price: number;
   @Column({ nullable: false, type: 'boolean', default: true })
   localAttention: boolean;
-  @OneToMany(() => OrderEntity, (orderDetail) => orderDetail.type, {
-    orphanedRowAction: 'delete',
-    persistence: true,
-    cascade: true,
-  })
+  @OneToMany(() => OrderEntity, (orderDetail) => orderDetail.type)
   orders?: OrderEntity[];
 }

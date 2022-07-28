@@ -16,6 +16,7 @@ import { TypeOrderController } from './infraestructure/controllers/typeOrder.con
 import { CategoryRepository } from './infraestructure/repository/CategoryRepository';
 import { OrderRepository } from './infraestructure/repository/OrderRepository';
 import { ProductRepository } from './infraestructure/repository/ProductRepository';
+import { StatusRepository } from './infraestructure/repository/StatusRepository';
 import { TableRepository } from './infraestructure/repository/TableRepository';
 import { TypeOrderRepository } from './infraestructure/repository/TypeOrderRepository';
 import { WsInit } from './infraestructure/ws/ws.init';
@@ -28,6 +29,7 @@ import { WsInit } from './infraestructure/ws/ws.init';
       TableRepository,
       ProductRepository,
       TypeOrderRepository,
+      StatusRepository,
     ]),
     CqrsModule,
   ],

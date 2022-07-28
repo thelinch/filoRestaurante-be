@@ -2,6 +2,7 @@ import { Category } from '../../domain/Category';
 import { Order } from '../../domain/Order';
 import { OrderDetail } from '../../domain/OrderDetail';
 import { Product } from '../../domain/Product';
+import { Status, StatusProperties } from '../../domain/Status';
 import { TableOrder } from '../../domain/Table';
 import { TypeOrder } from '../../domain/TypeOrder';
 import { CategoryEntity } from '../entity/CategoryEntity';
@@ -21,20 +22,22 @@ const util = {
     orderDetailEntity: OrderDetailEntity,
   ): OrderDetail {
     const product = new Product({
-      name: orderDetailEntity.product.name,
-      id: orderDetailEntity.product.id,
-      price: orderDetailEntity.product.price,
-      categories: orderDetailEntity.product.categories
+      name: orderDetailEntity.product?.name,
+      id: orderDetailEntity.product?.id,
+      price: orderDetailEntity.product?.price,
+      categories: orderDetailEntity.product?.categories
         ? orderDetailEntity.product.categories.map((c) =>
             util.categoryEntityToDomain(c),
           )
         : [],
     });
+    const status = new Status({ ...orderDetailEntity.status });
     const orderDetail = new OrderDetail({
       product: product,
       orderedQuantity: orderDetailEntity.orderedQuantity,
       id: orderDetailEntity.id,
       observation: orderDetailEntity.observation,
+      status,
     });
     return orderDetail;
   },
@@ -46,14 +49,16 @@ const util = {
     const orderDetails: OrderDetail[] = orderEntity.orderDetails.map((o) =>
       this.orderDetailEntityToModel(o),
     );
+    const statusProperties: StatusProperties = { ...orderEntity.status };
+    const status = new Status(statusProperties);
     const orderDomain = new Order(
       orderEntity.id,
       orderEntity.resume,
       orderEntity.observation,
       orderEntity.total,
       tableOrder,
-      orderEntity.state,
       orderEntity.code,
+      status,
       orderEntity.type,
       orderDetails,
     );
