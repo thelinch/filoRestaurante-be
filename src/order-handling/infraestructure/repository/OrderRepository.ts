@@ -147,6 +147,28 @@ export class OrderRepository
         )
       : [];
   }
+  async listOrderTypeDelivery(states: string[]): Promise<Order[]> {
+    const orders: OrderEntity[] = await this.createQueryBuilder()
+      .select('order')
+      .from(OrderEntity, 'order')
+      .leftJoinAndSelect('order.orderDetails', 'orderDetail')
+      .leftJoinAndSelect('order.user', 'user')
+      .leftJoinAndSelect('order.status', 'status')
+      .leftJoinAndSelect('orderDetail.product', 'product')
+      .leftJoinAndSelect('order.type', 'type')
+      .where('order.fechaCreacion=:fechaCreacion', {
+        fechaCreacion: moment().format('YYYY-MM-DD'),
+      })
+      .andWhere('order.state in(:...statesOrder)', {
+        statesOrder: states,
+      })
+      .andWhere('type.localAttention=:localAttention', {
+        localAttention: false,
+      })
+      .orderBy('order.fechaCreacion')
+      .getMany();
+    return orders.map((o) => util.orderEntityToOrderDomain(o));
+  }
   async updateOrder(order: Omit<Order, 'state'>): Promise<void> {
     const orderEntity = util.domainOrderToOrderEntity(order);
     await this.save(orderEntity);

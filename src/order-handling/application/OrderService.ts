@@ -22,6 +22,18 @@ export class OrderService {
     await this.orderRepository.updateState(order);
     orderContext.commit();
   }
+  async paymentOnlyDelivery(ids: string[]) {
+    for (const id of ids) {
+      await this.orderRepository.updateState({ State: 'pagado', Id: id });
+    }
+  }
+  async listOrderTypeDelivery() {
+    const lastState = await this.lastState();
+    const orders = await this.orderRepository.listOrderTypeDelivery([
+      lastState.name,
+    ]);
+    return orders;
+  }
   async changeState(changeStateBodyRequestDto: ChangeStateBodyRequestDto) {
     const lastState = await this.lastState();
     if (changeStateBodyRequestDto.type == 'order') {
@@ -43,7 +55,6 @@ export class OrderService {
           changeStateBodyRequestDto.id,
         );
         const item = orderDomain.OrderDetails[0];
-        console.log('entro al if', item);
         const orderContext = this.publisher.mergeObjectContext(item);
         item.lastState(orderDomain.Table.Name);
         orderContext.commit();
@@ -135,6 +146,7 @@ export class OrderService {
     const orders = await this.listOrdersForTable(tableId, [fisrtState.name]);
     return orders.length > 0;
   }
+
   async listOrdersForTable(
     tableId: string,
     states: string[] = [],
@@ -144,7 +156,6 @@ export class OrderService {
       const lastState = await this.lastState();
       statesProcess = [lastState.name];
     }
-    console.log('statesProces', statesProcess);
     return await this.orderRepository.listOrderOfTableAndStates(
       tableId,
       statesProcess,

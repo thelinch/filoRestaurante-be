@@ -73,6 +73,17 @@ export class OrderController {
     await this.OrderService.changeState(changeStateRequest);
   }
   @UseGuards(JwtAuthGuard)
+  @Post('/paymentOnlyTypeDelivery')
+  async paymentOnlyDelivery(@Body() ids: string[]) {
+    await this.OrderService.paymentOnlyDelivery(ids);
+  }
+  @UseGuards(JwtAuthGuard)
+  @Get('/ordersOnlyTypeDelivery')
+  async orderOnlyDelivery() {
+    const orders = await this.OrderService.listOrderTypeDelivery();
+    return orders;
+  }
+  @UseGuards(JwtAuthGuard)
   @Get('/mesas/:tableId/orders')
   async listOrderForTable(@Param('tableId') tableId: string) {
     return await this.OrderService.listOrdersForTable(tableId);
