@@ -8,7 +8,6 @@ import { OrderEntity, OrderState } from '../entity/OrderEntity';
 import { TableEntity } from '../entity/TableEntity';
 import util from '../util/util';
 import { getConnection } from 'typeorm';
-import { StatusEntity } from '../entity/StatusEntity';
 
 @EntityRepository(OrderEntity)
 export class OrderRepository
@@ -24,8 +23,6 @@ export class OrderRepository
 
   async created(order: Order): Promise<void> {
     const orderProperties = util.domainOrderToOrderEntity(order);
-    console.log('order Entity', orderProperties);
-
     await this.save({
       ...orderProperties,
       fechaCreacion: new Date(),
@@ -82,6 +79,23 @@ export class OrderRepository
 
     return data;
   }
+  async updateStateOrder(id: string, statusId: string, statusName: string) {
+    await this.createQueryBuilder()
+      .update({ status: { id: statusId }, state: statusName })
+      .where({ id })
+      .execute();
+  }
+
+  async updateStateOrderDetail(id: string, statusId: string) {
+    console.log('ENTROOO');
+    const connection = getConnection();
+    const queryRunner = connection.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.query(
+      `update orderdetail set statusId='${statusId}' where id='${id}'`,
+    );
+    await queryRunner.release();
+  }
 
   async listForCategories(categories: Category[]): Promise<Order[]> {
     const orders: OrderEntity[] = await this.createQueryBuilder()
@@ -101,6 +115,7 @@ export class OrderRepository
       .andWhere('order.fechaCreacion=:fechaCreacion', {
         fechaCreacion: moment().format('YYYY-MM-DD'),
       })
+      .andWhere('order.state!=:state', { state: OrderState.PAGADO })
       .orderBy('order.created_at')
       .getMany();
     console.log(

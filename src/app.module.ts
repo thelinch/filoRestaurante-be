@@ -41,7 +41,7 @@ import { StatusEntity } from './order-handling/infraestructure/entity/StatusEnti
           username: configService.get<string>('bd.user'),
           password: configService.get<string>('bd.password') || '',
           database: configService.get<string>('bd.name'),
-          synchronize: true,
+          synchronize: false,
           entities: [
             CategoryEntity,
             OrderDetailEntity,

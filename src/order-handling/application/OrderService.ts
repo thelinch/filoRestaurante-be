@@ -6,6 +6,7 @@ import { Status } from '../domain/Status';
 import { OrderState } from '../infraestructure/entity/OrderEntity';
 import { OrderRepository } from '../infraestructure/repository/OrderRepository';
 import { StatusRepository } from '../infraestructure/repository/StatusRepository';
+import { ChangeStateBodyRequestDto } from '../interface/dto/ChangeStateBodyRequestDto';
 
 @Injectable()
 export class OrderService {
@@ -20,6 +21,23 @@ export class OrderService {
     orderContext.payment();
     await this.orderRepository.updateState(order);
     orderContext.commit();
+  }
+  async changeState(changeStateBodyRequestDto: ChangeStateBodyRequestDto) {
+    if (changeStateBodyRequestDto.type == 'order') {
+      const status = await this.statusRepository.findOne({
+        id: changeStateBodyRequestDto.statusId,
+      });
+      await this.orderRepository.updateStateOrder(
+        changeStateBodyRequestDto.id,
+        changeStateBodyRequestDto.statusId,
+        status.name,
+      );
+    } else {
+      await this.orderRepository.updateStateOrderDetail(
+        changeStateBodyRequestDto.id,
+        changeStateBodyRequestDto.statusId,
+      );
+    }
   }
 
   async getStates() {

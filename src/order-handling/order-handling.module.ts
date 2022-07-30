@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { GenerateUuidShortUuid } from '../shared/infraestructure/generateCodeShortUuid';
 import { OrderAttendedHandler } from './application/events/OrderAttendedHandler';
 import { OrderCreatedHandler } from './application/events/OrderCreatedHandler';
@@ -20,6 +19,7 @@ import { StatusRepository } from './infraestructure/repository/StatusRepository'
 import { TableRepository } from './infraestructure/repository/TableRepository';
 import { TypeOrderRepository } from './infraestructure/repository/TypeOrderRepository';
 import { WsInit } from './infraestructure/ws/ws.init';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [

@@ -6,6 +6,7 @@ import { OrderService } from '../../application/OrderService';
 import { Category } from '../../domain/Category';
 import { Order } from '../../domain/Order';
 import { CategoryBodyRequestDto } from '../../interface/dto/CategoryBodyRequestDto';
+import { ChangeStateBodyRequestDto } from '../../interface/dto/ChangeStateBodyRequestDto';
 import { OrderBodyRequestDto } from '../../interface/dto/OrderBodyRequestDto';
 
 @Controller('orders')
@@ -65,6 +66,11 @@ export class OrderController {
     return this.OrderService.listForCategories(
       categoriesBodyRequestDto.map((c) => new Category(c)),
     );
+  }
+  @UseGuards(JwtAuthGuard)
+  @Post('/changeState')
+  async updateState(@Body() changeStateRequest: ChangeStateBodyRequestDto) {
+    await this.OrderService.changeState(changeStateRequest);
   }
   @UseGuards(JwtAuthGuard)
   @Get('/mesas/:tableId/orders')
