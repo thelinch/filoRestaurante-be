@@ -22,8 +22,8 @@ export class OrderController {
     orderBodyRequestDto.user = req.user;
     const order = req.body;
     /* const order = Order.create(orderBodyRequestDto); */
-    await this.OrderService.create(order);
-    res.send({ codigo: order.Code });
+    const orderDomain = await this.OrderService.create(order);
+    res.send({ codigo: orderDomain.Code });
   }
   @UseGuards(JwtAuthGuard)
   @Post('/product/mostSales')

@@ -20,6 +20,7 @@ import { TableRepository } from './infraestructure/repository/TableRepository';
 import { TypeOrderRepository } from './infraestructure/repository/TypeOrderRepository';
 import { WsInit } from './infraestructure/ws/ws.init';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ItemLastStateHandler } from './application/events/ItemLastStateHandler';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     OrderCreatedHandler,
     OrderPaymentHandler,
     OrderRejectHandler,
+    ItemLastStateHandler,
     WsInit,
   ],
   exports: [TypeOrmModule],

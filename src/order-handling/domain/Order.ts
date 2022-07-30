@@ -109,6 +109,12 @@ export class Order extends AggregateRoot {
   get Code() {
     return this.code;
   }
+  get OrderDetails() {
+    return this.orderDetails;
+  }
+  get Table() {
+    return this.table;
+  }
   payment() {
     this.state = OrderState.PAGADO;
     this.apply(Object.assign(new OrderPaymentEvent(), this));

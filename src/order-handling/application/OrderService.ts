@@ -23,6 +23,7 @@ export class OrderService {
     orderContext.commit();
   }
   async changeState(changeStateBodyRequestDto: ChangeStateBodyRequestDto) {
+    const lastState = await this.lastState();
     if (changeStateBodyRequestDto.type == 'order') {
       const status = await this.statusRepository.findOne({
         id: changeStateBodyRequestDto.statusId,
@@ -37,6 +38,16 @@ export class OrderService {
         changeStateBodyRequestDto.id,
         changeStateBodyRequestDto.statusId,
       );
+      if (lastState.id == changeStateBodyRequestDto.statusId) {
+        const orderDomain = await this.orderRepository.orderFindOrderDetailId(
+          changeStateBodyRequestDto.id,
+        );
+        const item = orderDomain.OrderDetails[0];
+        console.log('entro al if', item);
+        const orderContext = this.publisher.mergeObjectContext(item);
+        item.lastState(orderDomain.Table.Name);
+        orderContext.commit();
+      }
     }
   }
 
@@ -45,6 +56,13 @@ export class OrderService {
   }
   async fisrtState() {
     const status = await this.statusRepository.firstState();
+    return status;
+  }
+
+  async lastState() {
+    const status = await this.statusRepository.findOne({
+      order: { order: 'DESC' },
+    });
     return status;
   }
   async productMostSales({ fechaInicio, fechaFin }) {
@@ -93,6 +111,7 @@ export class OrderService {
     orderContext.createdEvent();
     await this.orderRepository.created(orderDomain);
     orderContext.commit();
+    return orderDomain;
   }
   async remove(orderId: string) {
     const order: Order = await this.orderRepository.findById(orderId);
@@ -112,16 +131,23 @@ export class OrderService {
     await this.orderRepository.updateOrder(order);
   }
   async tableConstainOrder(tableId: string): Promise<boolean> {
-    const orders = await this.listOrdersForTable(tableId, [OrderState.CREADO]);
+    const fisrtState = await this.fisrtState();
+    const orders = await this.listOrdersForTable(tableId, [fisrtState.name]);
     return orders.length > 0;
   }
   async listOrdersForTable(
     tableId: string,
-    states = [OrderState.ATENDIDO],
+    states: string[] = [],
   ): Promise<Order[]> {
+    let statesProcess = states;
+    if (states.length == 0) {
+      const lastState = await this.lastState();
+      statesProcess = [lastState.name];
+    }
+    console.log('statesProces', statesProcess);
     return await this.orderRepository.listOrderOfTableAndStates(
       tableId,
-      states,
+      statesProcess,
     );
   }
 }

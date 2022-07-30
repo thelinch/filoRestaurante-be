@@ -1,3 +1,5 @@
+import { AggregateRoot } from '@nestjs/cqrs';
+import { ItemLastStateEvent } from './events/ItemLastState.event';
 import { Product } from './Product';
 import { Status } from './Status';
 
@@ -9,13 +11,14 @@ export interface OrderDetailProperties {
   readonly status: Status;
 }
 
-export class OrderDetail {
+export class OrderDetail extends AggregateRoot {
   private id: string;
   private product: Product;
   private orderedQuantity: number;
   private observation: string;
   private status: Status;
   constructor(props: OrderDetailProperties) {
+    super();
     this.id = props.id;
     this.product = props.product;
     this.orderedQuantity = props.orderedQuantity;
@@ -36,5 +39,11 @@ export class OrderDetail {
   }
   get Status() {
     return this.status;
+  }
+  lastState(tableName: string) {
+    const itemEvent = new ItemLastStateEvent();
+    itemEvent.productName = this.product.Name;
+    itemEvent.tableName = tableName ?? null;
+    this.apply(itemEvent);
   }
 }

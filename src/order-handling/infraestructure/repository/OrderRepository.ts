@@ -87,7 +87,6 @@ export class OrderRepository
   }
 
   async updateStateOrderDetail(id: string, statusId: string) {
-    console.log('ENTROOO');
     const connection = getConnection();
     const queryRunner = connection.createQueryRunner();
     await queryRunner.connect();
@@ -118,16 +117,12 @@ export class OrderRepository
       .andWhere('order.state!=:state', { state: OrderState.PAGADO })
       .orderBy('order.created_at')
       .getMany();
-    console.log(
-      'orders',
-      orders.map((o) => o.orderDetails),
-    );
     return orders.map((o) => util.orderEntityToOrderDomain(o));
   }
 
   async listOrderOfTableAndStates(
     tableId: string,
-    states: OrderState[] = [],
+    states: string[] = [],
   ): Promise<Order[]> {
     const table: TableEntity = await this.createQueryBuilder()
       .select('table')
@@ -161,6 +156,26 @@ export class OrderRepository
       relations: ['orderDetails', 'orderDetails.product', 'table', 'user'],
       where: { id: orderId },
     });
+    return orderEntity ? util.orderEntityToOrderDomain(orderEntity) : undefined;
+  }
+  async orderFindOrderDetailId(orderDetailId: string) {
+    const orderEntity: OrderEntity = await this.createQueryBuilder()
+      .select('order')
+      .from(OrderEntity, 'order')
+      .leftJoinAndSelect('order.table', 'table')
+      .leftJoinAndSelect('order.user', 'user')
+      .innerJoinAndSelect(
+        'order.orderDetails',
+        'orderDetail',
+        'orderDetail.id=:orderDetailId',
+        { orderDetailId },
+      )
+      .innerJoinAndSelect('orderDetail.product', 'product')
+      .leftJoinAndSelect('orderDetail.status', 'statusDetail')
+      .innerJoinAndSelect('product.categories', 'category')
+      .leftJoinAndSelect('order.type', 'type')
+      .leftJoinAndSelect('order.status', 'statusOrder')
+      .getOne();
     return orderEntity ? util.orderEntityToOrderDomain(orderEntity) : undefined;
   }
   async removed(orderId: string): Promise<void> {

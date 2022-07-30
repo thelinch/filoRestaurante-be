@@ -24,7 +24,7 @@ export class ProductEntity {
   quantity: number;
   @Column({ type: 'enum', enum: ProductState, default: ProductState.ACTIVO })
   state: ProductState;
-  @Column({ type: 'decimal', precision: 8, scale: 2 })
+  @Column({ type: 'float' })
   price: number;
   @OneToMany(() => OrderDetailEntity, (o) => o.product)
   orderDetails: OrderDetailEntity[];
