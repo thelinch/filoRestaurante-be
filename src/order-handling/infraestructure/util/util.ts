@@ -87,7 +87,7 @@ const util = {
     return productEntityInstance;
   },
   productEntityToDomain: function (product: ProductEntity): Product {
-    const categoriesDomain = product.categories.map((c) =>
+    const categoriesDomain = product.categories?.map((c) =>
       util.categoryEntityToDomain(c),
     );
     const productDomainInstance = new Product({

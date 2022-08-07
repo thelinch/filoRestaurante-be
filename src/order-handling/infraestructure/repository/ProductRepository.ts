@@ -50,6 +50,17 @@ export class ProductRepository
       );
     }
   }
+
+  async getProductsFindId(ids: string[]): Promise<Product[]> {
+    const products: ProductEntity[] = await this.createQueryBuilder()
+      .select('product')
+      .from(ProductEntity, 'product')
+      .leftJoinAndSelect('product.categories', 'category')
+      .whereInIds(ids)
+      .getMany();
+    const productsDomain = products.map((p) => util.productEntityToDomain(p));
+    return productsDomain;
+  }
   async increaseQuantity(orderDetails: OrderDetail[]): Promise<void> {
     for (let index = 0; index < orderDetails.length; index++) {
       const orderDetail = orderDetails[index];

@@ -5,6 +5,7 @@ import { Order } from '../domain/Order';
 import { Status } from '../domain/Status';
 import { OrderState } from '../infraestructure/entity/OrderEntity';
 import { OrderRepository } from '../infraestructure/repository/OrderRepository';
+import { ProductRepository } from '../infraestructure/repository/ProductRepository';
 import { StatusRepository } from '../infraestructure/repository/StatusRepository';
 import { ChangeStateBodyRequestDto } from '../interface/dto/ChangeStateBodyRequestDto';
 
@@ -14,6 +15,7 @@ export class OrderService {
     private publisher: EventPublisher,
     private orderRepository: OrderRepository,
     private statusRepository: StatusRepository,
+    private productRepository: ProductRepository,
   ) {}
   async payment(orderId: string) {
     const order: Order = await this.orderRepository.findById(orderId);
@@ -22,6 +24,7 @@ export class OrderService {
     await this.orderRepository.updateState(order);
     orderContext.commit();
   }
+
   async paymentOnlyDelivery(ids: string[]) {
     for (const id of ids) {
       await this.orderRepository.updateState({ State: 'pagado', Id: id });
@@ -118,6 +121,11 @@ export class OrderService {
   async create(order: any) {
     const firstState = await this.fisrtState();
     const orderDomain = Order.dtoToDomain(order, new Status(firstState));
+    const productsIds = orderDomain.OrderDetails.map((d) => d.Product.Id);
+    const productsBd = await this.productRepository.getProductsFindId(
+      productsIds,
+    );
+    orderDomain.validateProductStock(productsBd);
     const orderContext = this.publisher.mergeObjectContext(orderDomain);
     orderContext.createdEvent();
     await this.orderRepository.created(orderDomain);

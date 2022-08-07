@@ -136,6 +136,40 @@ export class Order extends AggregateRoot {
     }
     throw new UnprocessableEntityException('No se puede eliminar la orden');
   }
+  validateProductStock(productsBd: Product[]) {
+    let errors = [];
+    const productsOrder = this.OrderDetails.reduce(
+      (prev, curr, index, array) => {
+        if (!prev.find((p) => p.id == curr.Product.Id)) {
+          const quantityTotal = array
+            .filter((a) => a.Product.Id == curr.Product.Id)
+            .reduce(
+              (quantity, product) => (quantity += product.OrderedQuantity),
+              0,
+            );
+          prev.push({
+            id: curr.Product.Id,
+            name: curr.Product.Name,
+            quantity: quantityTotal,
+          });
+        }
+        return prev;
+      },
+      [],
+    );
+    for (const product of productsBd) {
+      const productFind = productsOrder.find((p) => p.id == product.Id);
+      if (product.Quantity < productFind.quantity) {
+        errors.push(
+          `El producto ${product.Name} no tiene suficiente cantidad para satisfacer la orden; solo existe ${product.Quantity} disponible `,
+        );
+      }
+    }
+    if (errors.length > 0) {
+      throw new UnprocessableEntityException(errors);
+    }
+  }
+
   attended() {
     this.state = OrderState.ATENDIDO;
     this.apply(Object.assign(new OrderAttendedEvent(), this));
